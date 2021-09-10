@@ -24,6 +24,11 @@ namespace BattleArena
         private int currentEnemyIndex = 0;
         private Character currentEnemy;
 
+        Character troll;
+        Character aHead;
+        Character creepyMan;
+        Character jakeFromStateFarm;
+
         /// <summary>
         /// Function that starts the main game loop
         /// </summary>
@@ -36,6 +41,22 @@ namespace BattleArena
         /// </summary>
         public void Start()
         {
+            troll.name = "Troll";
+            troll.health = 20;
+            troll.attackPower = 30;
+            troll.defensePower = 5;
+
+            aHead.name = "A Head";
+            aHead.health = 20;
+            aHead.attackPower = 30;
+            aHead.defensePower = 5;
+
+            creepyMan.name = "Creepy Man";
+            creepyMan.health = 30;
+            creepyMan.attackPower = 30;
+            creepyMan.defensePower = 5;
+
+            jakeFromStateFarm. name = "Jake From State Farm"
         }
 
         /// <summary>
