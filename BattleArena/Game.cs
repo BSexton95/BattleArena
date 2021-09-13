@@ -51,7 +51,7 @@ namespace BattleArena
         public void Start()
         {
             player.name = playerName;
-            player.health = 60;
+            player.health = 100;
             player.attackPower = 40;
             player.defensePower = 5;
 
@@ -60,7 +60,7 @@ namespace BattleArena
             troll.attackPower = 30;
             troll.defensePower = 5;
 
-            aHead.name = "A Head";
+            aHead.name = "Head";
             aHead.health = 20;
             aHead.attackPower = 30;
             aHead.defensePower = 5;
@@ -97,7 +97,8 @@ namespace BattleArena
 
             if(choice == 1)
             {
-                currentScene = 1;
+                currentScene = 0;
+                currentEnemyIndex = 0;
             }
             else if(choice == 2)
             {
@@ -197,10 +198,10 @@ namespace BattleArena
         void GetPlayerName()
         {
             Console.WriteLine("Welcome to the Battle Arena! What is your fighters name?");
-            playerName = Console.ReadLine();
+            player.name = Console.ReadLine();
             Console.WriteLine("");
 
-            Console.WriteLine("Welcome " + playerName + "!");
+            Console.WriteLine("Welcome " + player.name + "!");
         }
 
         /// <summary>
@@ -257,6 +258,7 @@ namespace BattleArena
         {
             float damageDealt = CalculateDamage(attacker.attackPower, defender.defensePower);
             defender.health -= damageDealt;
+
             return damageDealt;
         }
 
@@ -265,23 +267,25 @@ namespace BattleArena
         /// </summary>
         public void Battle()
         {
-            DisplayStats(player);
-            DisplayStats(enemies[currentEnemyIndex]);
+           
+                DisplayStats(player);
+                DisplayStats(enemies[currentEnemyIndex]);
 
-            int choice = GetInput("A troll approaches you. What do you do?", "Attack", "Dodge");
+                int choice = GetInput("A " + enemies[currentEnemyIndex].name + " approaches you. What do you do?", "Attack", "Dodge");
 
-            if(choice == 1)
+            if (choice == 1)
             {
                 float damageDealt = Attack(ref player, ref enemies[currentEnemyIndex]);
                 Console.WriteLine("You dealt " + player.attackPower + " damage!" +
-                    "\n The " + enemies[currentEnemyIndex] + "dealt " + enemies[currentEnemyIndex].attackPower);
+                    "\n The " + enemies[currentEnemyIndex].name + " dealt " + enemies[currentEnemyIndex].attackPower);
+
+                damageDealt = Attack(ref enemies[currentEnemyIndex], ref player);
+                
             }
-            else if(choice == 2)
+            else if (choice == 2)
             {
                 Console.WriteLine("You dodged the trolls attack");
             }
-
-           
 
             Console.ReadKey(true);
             Console.Clear();
@@ -295,15 +299,36 @@ namespace BattleArena
         /// </summary>
         void CheckBattleResults()
         {
-            if(player.health <= 0)
+            currentEnemy = enemies[currentEnemyIndex];
+
+            if (player.health <= 0)
             {
                 Console.WriteLine("You died");
+                currentScene = 2;
             }
-            else if(currentEnemy.health <= 0)
+            else if (currentEnemy.health <= 0)
             {
+                Console.WriteLine("You have defeated the " + enemies[currentEnemyIndex].name);
                 currentEnemyIndex++;
+                if (TryEndSimulation())
+                {
+                    return;
+                }
+
                 currentEnemy = enemies[currentEnemyIndex];
             }
+        }
+
+        bool TryEndSimulation()
+        {
+            bool simulationOver = currentEnemyIndex >= enemies.Length;
+
+            if (simulationOver)
+            {
+                currentScene = 2;
+            }
+
+            return simulationOver;
         }
 
     }
