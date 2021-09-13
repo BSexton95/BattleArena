@@ -200,7 +200,7 @@ namespace BattleArena
         /// <returns>The amount of damage done to the defender</returns>
         public float Attack(ref Character attacker, ref Character defender)
         {
-            float damageTaken = CalculateDamage(attacker, defender);
+            float damageTaken = CalculateDamage(attacker.attackPower, defender.defensePower);
             defender.health -= damageTaken;
             return damageTaken;
         }
@@ -210,6 +210,19 @@ namespace BattleArena
         /// </summary>
         public void Battle()
         {
+            //Displays player stats
+            DisplayStats(player);
+            //Displays enemies stats
+            DisplayStats(currentEnemy);
+
+            float damageDealt = Attack(ref player, ref currentEnemy);
+            Console.WriteLine("You dealt " + player.attackPower + " damage!" +
+                "\n The " + currentEnemy + "dealt " + currentEnemy.attackPower);
+
+            Console.ReadKey(true);
+            Console.Clear();
+
+
         }
 
         /// <summary>
