@@ -23,7 +23,6 @@ namespace BattleArena
         Character[] enemies;
         private int currentEnemyIndex = 0;
         private Character currentEnemy;
-        string playerName;
 
         Character troll;
         Character aHead;
@@ -35,7 +34,14 @@ namespace BattleArena
         /// </summary>
         public void Run()
         {
-            
+            Start();
+
+            while(!gameOver)
+            {
+                Update();
+            }
+
+            End();
         }
 
         /// <summary>
@@ -72,6 +78,8 @@ namespace BattleArena
         /// </summary>
         public void Update()
         {
+            DisplayCurrentScene();
+            Console.Clear();
         }
 
         /// <summary>
@@ -183,9 +191,10 @@ namespace BattleArena
         void GetPlayerName()
         {
             Console.WriteLine("Welcome to the Battle Arena! What is your fighters name?");
-            Console.ReadLine();
+            string input = Console.ReadLine();
+            Console.WriteLine("");
 
-            playerName = Console.ReadLine();
+            Console.WriteLine("Welcome " + input + "!");
         }
 
         /// <summary>
@@ -194,7 +203,16 @@ namespace BattleArena
         /// </summary>
         public void CharacterSelection()
         {
-            int choice = GetInput("Welcome " + playerName + "! Please Select a class.", "Brawler", "Gunman");
+            int choice = GetInput("Please choose a class", "Brawler", "Gunman");
+
+            if(choice == 1)
+            {
+                currentScene = 1;
+            }
+            else if (choice == 2)
+            {
+                gameOver = true;
+            }
         }
 
         /// <summary>
@@ -208,6 +226,7 @@ namespace BattleArena
             Console.WriteLine("Health " + character.health);
             Console.WriteLine("Attack Power " + character.attackPower);
             Console.WriteLine("Defense Power " + character.defensePower);
+            Console.WriteLine("");
 
         }
 
@@ -245,9 +264,20 @@ namespace BattleArena
             //Displays enemies stats
             DisplayStats(currentEnemy);
 
-            float damageDealt = Attack(ref player, ref currentEnemy);
-            Console.WriteLine("You dealt " + player.attackPower + " damage!" +
-                "\n The " + currentEnemy + "dealt " + currentEnemy.attackPower);
+            int choice = GetInput("A troll approaches you. What do you do?", "Attack", "Dodge");
+
+            if(choice == 1)
+            {
+                float damageDealt = Attack(ref player, ref currentEnemy);
+                Console.WriteLine("You dealt " + player.attackPower + " damage!" +
+                    "\n The " + currentEnemy + "dealt " + currentEnemy.attackPower);
+            }
+            else if(choice == 2)
+            {
+                Console.WriteLine("You dodged the trolls attack");
+            }
+
+           
 
             Console.ReadKey(true);
             Console.Clear();
