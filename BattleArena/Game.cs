@@ -79,6 +79,16 @@ namespace BattleArena
         /// </summary>
         public void End()
         {
+            int choice = GetInput("Play Again?", "Yes", "No");
+
+            if(choice == 1)
+            {
+                currentScene = 1;
+            }
+            else if(choice == 2)
+            {
+                gameOver = true;
+            }
         }
 
         /// <summary>
@@ -133,6 +143,26 @@ namespace BattleArena
         /// </summary>
         void DisplayCurrentScene()
         {
+            switch(currentScene)
+            {
+                case 0:
+                    DisplayMainMenu();
+                    break;
+
+                case 1:
+                    Battle();
+                    CheckBattleResults();
+                    Console.ReadKey(true);
+                    break;
+
+                case 2:
+                    End();
+                    break;
+
+                case 3:
+                    Console.WriteLine("Invalide Scene Index!");
+                    break;
+            }
         }
 
         /// <summary>
