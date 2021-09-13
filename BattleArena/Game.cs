@@ -23,6 +23,7 @@ namespace BattleArena
         Character[] enemies;
         private int currentEnemyIndex = 0;
         private Character currentEnemy;
+        string playerName;
 
         Character troll;
         Character aHead;
@@ -34,6 +35,7 @@ namespace BattleArena
         /// </summary>
         public void Run()
         {
+            
         }
 
         /// <summary>
@@ -56,7 +58,13 @@ namespace BattleArena
             creepyMan.attackPower = 30;
             creepyMan.defensePower = 5;
 
-            jakeFromStateFarm. name = "Jake From State Farm"
+            jakeFromStateFarm.name = "Jake From State Farm";
+            jakeFromStateFarm.health = 50;
+            jakeFromStateFarm.attackPower = 30;
+            jakeFromStateFarm.defensePower = 10;
+
+            enemies = new Character[] { troll, aHead, creepyMan, jakeFromStateFarm };
+            
         }
 
         /// <summary>
@@ -132,6 +140,10 @@ namespace BattleArena
         /// </summary>
         void DisplayMainMenu()
         {
+
+            GetPlayerName();
+            CharacterSelection();
+
         }
 
         /// <summary>
@@ -140,7 +152,10 @@ namespace BattleArena
         /// </summary>
         void GetPlayerName()
         {
+            Console.WriteLine("Welcome to the Battle Arena! What is your fighters name?");
+            Console.ReadLine();
 
+            playerName = Console.ReadLine();
         }
 
         /// <summary>
@@ -149,6 +164,7 @@ namespace BattleArena
         /// </summary>
         public void CharacterSelection()
         {
+            int choice = GetInput("Welcome " + playerName + "! Please Select a class.", "Brawler", "Gunman");
         }
 
         /// <summary>
@@ -157,6 +173,10 @@ namespace BattleArena
         /// <param name="character">The character that will have its stats shown</param>
         void DisplayStats(Character character)
         {
+            Console.WriteLine("Name " + character.name);
+            Console.WriteLine("Health " + character.health);
+            Console.WriteLine("Attack Power " + character.attackPower);
+            Console.WriteLine("Defense Power " + character.defensePower);
         }
 
         /// <summary>
