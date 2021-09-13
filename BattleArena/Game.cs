@@ -23,6 +23,7 @@ namespace BattleArena
         Character[] enemies;
         private int currentEnemyIndex = 0;
         private Character currentEnemy;
+        string playerName;
 
         Character troll;
         Character aHead;
@@ -49,6 +50,11 @@ namespace BattleArena
         /// </summary>
         public void Start()
         {
+            player.name = playerName;
+            player.health = 60;
+            player.attackPower = 40;
+            player.defensePower = 5;
+
             troll.name = "Troll";
             troll.health = 20;
             troll.attackPower = 30;
@@ -191,10 +197,10 @@ namespace BattleArena
         void GetPlayerName()
         {
             Console.WriteLine("Welcome to the Battle Arena! What is your fighters name?");
-            string input = Console.ReadLine();
+            playerName = Console.ReadLine();
             Console.WriteLine("");
 
-            Console.WriteLine("Welcome " + input + "!");
+            Console.WriteLine("Welcome " + playerName + "!");
         }
 
         /// <summary>
@@ -249,9 +255,9 @@ namespace BattleArena
         /// <returns>The amount of damage done to the defender</returns>
         public float Attack(ref Character attacker, ref Character defender)
         {
-            float damageTaken = CalculateDamage(attacker.attackPower, defender.defensePower);
-            defender.health -= damageTaken;
-            return damageTaken;
+            float damageDealt = CalculateDamage(attacker.attackPower, defender.defensePower);
+            defender.health -= damageDealt;
+            return damageDealt;
         }
 
         /// <summary>
@@ -259,18 +265,16 @@ namespace BattleArena
         /// </summary>
         public void Battle()
         {
-            //Displays player stats
             DisplayStats(player);
-            //Displays enemies stats
-            DisplayStats(currentEnemy);
+            DisplayStats(enemies[currentEnemyIndex]);
 
             int choice = GetInput("A troll approaches you. What do you do?", "Attack", "Dodge");
 
             if(choice == 1)
             {
-                float damageDealt = Attack(ref player, ref currentEnemy);
+                float damageDealt = Attack(ref player, ref enemies[currentEnemyIndex]);
                 Console.WriteLine("You dealt " + player.attackPower + " damage!" +
-                    "\n The " + currentEnemy + "dealt " + currentEnemy.attackPower);
+                    "\n The " + enemies[currentEnemyIndex] + "dealt " + enemies[currentEnemyIndex].attackPower);
             }
             else if(choice == 2)
             {
