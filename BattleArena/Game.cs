@@ -231,6 +231,15 @@ namespace BattleArena
         /// </summary>
         void CheckBattleResults()
         {
+            if(player.health <= 0)
+            {
+                Console.WriteLine("You died");
+            }
+            else if(currentEnemy.health <= 0)
+            {
+                currentEnemyIndex++;
+                currentEnemy = enemies[currentEnemyIndex];
+            }
         }
 
     }
