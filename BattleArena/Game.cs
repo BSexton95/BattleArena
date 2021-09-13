@@ -52,27 +52,27 @@ namespace BattleArena
         {
             player.name = playerName;
             player.health = 100;
-            player.attackPower = 40;
+            player.attackPower = 50;
             player.defensePower = 5;
 
             troll.name = "Troll";
-            troll.health = 20;
-            troll.attackPower = 30;
+            troll.health = 10;
+            troll.attackPower = 20;
             troll.defensePower = 5;
 
             aHead.name = "Head";
-            aHead.health = 20;
-            aHead.attackPower = 30;
+            aHead.health = 10;
+            aHead.attackPower = 20;
             aHead.defensePower = 5;
 
             creepyMan.name = "Creepy Man";
-            creepyMan.health = 30;
-            creepyMan.attackPower = 30;
+            creepyMan.health = 10;
+            creepyMan.attackPower = 20;
             creepyMan.defensePower = 5;
 
             jakeFromStateFarm.name = "Jake From State Farm";
-            jakeFromStateFarm.health = 50;
-            jakeFromStateFarm.attackPower = 30;
+            jakeFromStateFarm.health = 20;
+            jakeFromStateFarm.attackPower = 20;
             jakeFromStateFarm.defensePower = 10;
 
             enemies = new Character[] { troll, aHead, creepyMan, jakeFromStateFarm };
