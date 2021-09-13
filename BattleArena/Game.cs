@@ -173,10 +173,12 @@ namespace BattleArena
         /// <param name="character">The character that will have its stats shown</param>
         void DisplayStats(Character character)
         {
+
             Console.WriteLine("Name " + character.name);
             Console.WriteLine("Health " + character.health);
             Console.WriteLine("Attack Power " + character.attackPower);
             Console.WriteLine("Defense Power " + character.defensePower);
+
         }
 
         /// <summary>
@@ -187,6 +189,7 @@ namespace BattleArena
         /// <returns>The amount of damage done to the defender</returns>
         float CalculateDamage(float attackPower, float defensePower)
         {
+            return attackPower - defensePower;
         }
 
         /// <summary>
@@ -197,6 +200,9 @@ namespace BattleArena
         /// <returns>The amount of damage done to the defender</returns>
         public float Attack(ref Character attacker, ref Character defender)
         {
+            float damageTaken = CalculateDamage(attacker, defender);
+            defender.health -= damageTaken;
+            return damageTaken;
         }
 
         /// <summary>
