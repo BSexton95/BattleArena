@@ -4,36 +4,24 @@ using System.Text;
 
 namespace BattleArena
 {
-    //Test Commit
-
-    /// <summary>
-    /// Represents any entity that exists in game
-    /// </summary>
-    struct Character
-    {
-        public string name;
-        public float health;
-        public float attackPower;
-        public float defensePower;
-    }
-
     class Game
     {
-        bool gameOver;
-        int currentScene;
-        Character player;
-        Character[] enemies;
-        private int currentEnemyIndex = 0;
-        private Character currentEnemy;
+        private bool _gameOver;
+        private int _currentScene;
+        private Entity _player;
+        private Entity[] _enemies;
+        private int _currentEnemyIndex;
+        private Entity _currentEnemy;
+        private string _playerName;
 
         //Enemy 1
-        Character troll;
+        Entity troll;
         //Enemy 2
-        Character aHead;
+        Entity aHead;
         //Enemy 3
-        Character creepyMan;
+        Entity creepyMan;
         //Enemy 4
-        Character jakeFromStateFarm;
+        Entity jakeFromStateFarm;
 
         /// <summary>
         /// Function that starts the main game loop
@@ -55,39 +43,23 @@ namespace BattleArena
         /// </summary>
         public void Start()
         {
-            gameOver = false;
-            currentScene = 0;
-            currentEnemyIndex = 0;
+            _gameOver = false;
+            _currentScene = 0;
+            _currentEnemyIndex = 0;
 
             //Enemy 1 stats
-            troll.name = "Troll";
-            troll.health = 10;
-            troll.attackPower = 20;
-            troll.defensePower = 5;
+            Entity fraawg = new Entity("Fraawg", 42590, 15, 573);
 
             //Enemy 2 stats
-            aHead.name = "Head";
-            aHead.health = 10;
-            aHead.attackPower = 20;
-            aHead.defensePower = 5;
+            Entity sassafrazz = new Entity("Sassafrazzz", 745, 1738, 5907);
 
-            //Enemy 3 stats
-            creepyMan.name = "Creepy Man";
-            creepyMan.health = 10;
-            creepyMan.attackPower = 20;
-            creepyMan.defensePower = 5;
-
-            //Enemy 4 stats
-            jakeFromStateFarm.name = "Jake From State Farm";
-            jakeFromStateFarm.health = 20;
-            jakeFromStateFarm.attackPower = 20;
-            jakeFromStateFarm.defensePower = 10;
-
-            currentEnemy = enemies[currentEnemyIndex];
+            //Enemy 2 stats
+            Entity wompus = new Entity("Wompus with Gun", 999, 55, 3000);
 
             //Enemies are put into an array
-            enemies = new Character[] { troll, aHead, creepyMan, jakeFromStateFarm };
-            
+            _enemies = new Entity[] { fraawg, sassafrazz, wompus};
+
+            _currentEnemy = _enemies[_currentEnemyIndex];
         }
 
         /// <summary>
@@ -160,7 +132,7 @@ namespace BattleArena
         /// </summary>
         void DisplayCurrentScene()
         {
-            switch(currentScene)
+            switch(_currentScene)
             {
                 case 0:
                     GetPlayerName();
@@ -189,15 +161,20 @@ namespace BattleArena
         {
             int choice = GetInput("Play Again?", "Yes", "No");
 
+            //If player chooses to play again...
             if(choice == 1)
             {
-                currentScene = 0;
-                currentEnemyIndex = 0;
-                currentEnemy = enemies[currentEnemyIndex];
+                //...set scene back to 0, which asks for player name
+                _currentScene = 0;
+                //reset the current enemy to the first enemy in the array
+                _currentEnemyIndex = 0;
+                _currentEnemy = _enemies[_currentEnemyIndex];
             }
+            //If player chooses to quit the game...
             else
             {
-                gameOver = true;
+                //...set gameOver to true end the game.
+                _gameOver = true;
             }
 
         }
@@ -211,21 +188,22 @@ namespace BattleArena
             //Ask player for a name
             Console.WriteLine("Welcome to the Battle Arena! What is your fighters name?");
             Console.Write("> ");
-            player.name = Console.ReadLine();
+            _playerName = Console.ReadLine();
             Console.WriteLine("");
             Console.Clear();
 
             //Askes player if they are sure that want to keep the name they have choosen.
-            int choice = GetInput("You have entered " + player.name + " . Are you sure you want to keep this name?", "Yes", "No");
+            int choice = GetInput("You have entered " + _playerName + " . Are you sure you want to keep this name?", "Yes", "No");
 
             //If player has choosen to keep their name...
             if (choice == 1)
             {
                 //...continue on 
-                currentScene++;
+                _currentScene++;
             }
 
-            Console.WriteLine("Welcome " + player.name + "!");
+            //Welcomes player to the battle arena
+            Console.WriteLine("Welcome " + _playerName + "!");
         }
 
         /// <summary>
@@ -236,19 +214,23 @@ namespace BattleArena
         {
             int choice = GetInput("Please choose a class", "Wizard", "Knight");
 
+            //If player chooses the class Wizard...
             if (choice == 1)
             {
-                player.health = 50;
-                player.attackPower = 30000000000;
-                player.defensePower = 500000;
-                currentScene++;
+                //...player stats for Wizard
+                _player = new Entity(_playerName, 50, 25000000, 50000000);
+
+                //Updates current scene
+                _currentScene++;
             }
+            //If player chooses the class Knight
             else if (choice == 2)
             {
-                player.health = 75;
-                player.attackPower = 15;
-                player.defensePower = 5;
-                currentScene++;
+                //...player stats for Knight
+                _player = new Entity(_playerName, 75, 15, 10);
+
+                //Updates current scene
+                _currentScene++;
             }
         }
 
@@ -256,52 +238,15 @@ namespace BattleArena
         /// Prints a characters stats to the console
         /// </summary>
         /// <param name="character">The character that will have its stats shown</param>
-        void DisplayStats(Character character)
+        void DisplayStats(Entity character)
         {
 
-            Console.WriteLine("Name " + character.name);
-            Console.WriteLine("Health " + character.health);
-            Console.WriteLine("Attack Power " + character.attackPower);
-            Console.WriteLine("Defense Power " + character.defensePower);
+            Console.WriteLine("Name " + character.Name);
+            Console.WriteLine("Health " + character.Health);
+            Console.WriteLine("Attack Power " + character.AttackPower);
+            Console.WriteLine("Defense Power " + character.DefensePower);
             Console.WriteLine("");
 
-        }
-
-        /// <summary>
-        /// Calculates the amount of damage that will be done to a character
-        /// </summary>
-        /// <param name="attackPower">The attacking character's attack power</param>
-        /// <param name="defensePower">The defending character's defense power</param>
-        /// <returns>The amount of damage done to the defender</returns>
-        float CalculateDamage(float attackPower, float defensePower)
-        {
-            float damageTaken = attackPower - defensePower;
-
-            if(damageTaken < 0)
-            {
-                damageTaken = 0;
-            }
-
-            return damageTaken;
-        }
-
-        /// <summary>
-        /// Deals damage to a character based on an attacker's attack power
-        /// </summary>
-        /// <param name="attacker">The character that initiated the attack</param>
-        /// <param name="defender">The character that is being attacked</param>
-        /// <returns>The amount of damage done to the defender</returns>
-        public float Attack(ref Character attacker, ref Character defender)
-        {
-            float damageTaken = CalculateDamage(attacker.attackPower, defender.defensePower);
-            defender.health -= damageTaken;
-            
-            if(defender.health < 0)
-            {
-                defender.health = 0;
-            }
-
-            return damageTaken;
         }
 
         /// <summary>
@@ -311,14 +256,14 @@ namespace BattleArena
         {
             float damageDealt = 0;
 
-            DisplayStats(player);
-            DisplayStats(currentEnemy);
+            DisplayStats(_player);
+            DisplayStats(_currentEnemy);
 
-            int choice = GetInput("A " + currentEnemy.name + " approaches you. What do you do?", "Attack", "Dodge");
+            int choice = GetInput("A " + _currentEnemy.Name + " approaches you. What do you do?", "Attack", "Dodge");
 
             if (choice == 1)
             {
-                damageDealt = Attack(ref player, ref currentEnemy);
+                damageDealt = Attack(ref _player, ref _currentEnemy);
                 Console.WriteLine("You dealt " + damageDealt + " damage!");
 
             }
@@ -330,8 +275,8 @@ namespace BattleArena
                 return;
             }
 
-            damageDealt = Attack(ref currentEnemy, ref player);
-            Console.WriteLine("The " + currentEnemy.name + " dealt" + damageDealt);
+            damageDealt = Attack(ref _currentEnemy, ref _player);
+            Console.WriteLine("The " + _currentEnemy.Name + " dealt" + damageDealt);
 
             Console.ReadKey(true);
             Console.Clear();
@@ -343,28 +288,28 @@ namespace BattleArena
         /// </summary>
         void CheckBattleResults()
         {
-            if(player.health <= 0)
+            if(_player.health <= 0)
             {
                 Console.WriteLine("You were slain...");
                 Console.ReadKey(true);
                 Console.Clear();
 
-                currentScene = 3;
+                _currentScene = 3;
             }
-            else if(currentEnemy.health <= 0)
+            else if(_currentEnemy.health <= 0)
             {
-                Console.WriteLine("You slayed the " + currentEnemy.name);
+                Console.WriteLine("You slayed the " + _currentEnemy.name);
                 Console.ReadKey(true);
                 Console.Clear();
-                currentEnemyIndex++;
+                _currentEnemyIndex++;
 
-                if (currentEnemyIndex >= enemies.Length)
+                if (_currentEnemyIndex >= _enemies.Length)
                 {
-                    currentScene = 3;
+                    _currentScene = 3;
                     Console.WriteLine("You've slain all the enemies! You are a true warrior.");
                     return;
                 }
-                currentEnemy = enemies[currentEnemyIndex];
+                _currentEnemy = _enemies[_currentEnemyIndex];
             }
         }
     }
