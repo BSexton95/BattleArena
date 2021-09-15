@@ -25,7 +25,6 @@ namespace BattleArena
         Character[] enemies;
         private int currentEnemyIndex = 0;
         private Character currentEnemy;
-        string playerName;
 
         //Enemy 1
         Character troll;
