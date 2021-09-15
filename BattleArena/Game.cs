@@ -14,15 +14,6 @@ namespace BattleArena
         private Entity _currentEnemy;
         private string _playerName;
 
-        //Enemy 1
-        Entity troll;
-        //Enemy 2
-        Entity aHead;
-        //Enemy 3
-        Entity creepyMan;
-        //Enemy 4
-        Entity jakeFromStateFarm;
-
         /// <summary>
         /// Function that starts the main game loop
         /// </summary>
@@ -30,7 +21,7 @@ namespace BattleArena
         {
             Start();
 
-            while(!gameOver)
+            while(!_gameOver)
             {
                 Update();
             }
@@ -45,6 +36,15 @@ namespace BattleArena
         {
             _gameOver = false;
             _currentScene = 0;
+            InitializeEnemies();
+        }
+
+        /// <summary>
+        /// Function initializes all enemies and their starting values
+        /// </summary>
+        public void InitializeEnemies()
+        {
+            //reset the current enemy to the first enemy in the array
             _currentEnemyIndex = 0;
 
             //Enemy 1 stats
@@ -57,7 +57,7 @@ namespace BattleArena
             Entity wompus = new Entity("Wompus with Gun", 999, 55, 3000);
 
             //Enemies are put into an array
-            _enemies = new Entity[] { fraawg, sassafrazz, wompus};
+            _enemies = new Entity[] { fraawg, sassafrazz, wompus };
 
             _currentEnemy = _enemies[_currentEnemyIndex];
         }
@@ -166,9 +166,7 @@ namespace BattleArena
             {
                 //...set scene back to 0, which asks for player name
                 _currentScene = 0;
-                //reset the current enemy to the first enemy in the array
-                _currentEnemyIndex = 0;
-                _currentEnemy = _enemies[_currentEnemyIndex];
+                InitializeEnemies();
             }
             //If player chooses to quit the game...
             else
@@ -261,12 +259,15 @@ namespace BattleArena
 
             int choice = GetInput("A " + _currentEnemy.Name + " approaches you. What do you do?", "Attack", "Dodge");
 
+            //If player chooses to attack the enemy...
             if (choice == 1)
             {
-                damageDealt = Attack(ref _player, ref _currentEnemy);
+                //...player attacks and deals damage to enemy
+                damageDealt = _player.Attack(_currentEnemy);
                 Console.WriteLine("You dealt " + damageDealt + " damage!");
 
             }
+            //Otherwise if player dicides to dodge the enemy...
             else if (choice == 2)
             {
                 Console.WriteLine("You dodged the trolls attack");
@@ -275,7 +276,7 @@ namespace BattleArena
                 return;
             }
 
-            damageDealt = Attack(ref _currentEnemy, ref _player);
+            damageDealt = _currentEnemy.Attack(_player);
             Console.WriteLine("The " + _currentEnemy.Name + " dealt" + damageDealt);
 
             Console.ReadKey(true);
@@ -288,7 +289,7 @@ namespace BattleArena
         /// </summary>
         void CheckBattleResults()
         {
-            if(_player.health <= 0)
+            if(_player.Health <= 0)
             {
                 Console.WriteLine("You were slain...");
                 Console.ReadKey(true);
@@ -296,9 +297,9 @@ namespace BattleArena
 
                 _currentScene = 3;
             }
-            else if(_currentEnemy.health <= 0)
+            else if(_currentEnemy.Health <= 0)
             {
-                Console.WriteLine("You slayed the " + _currentEnemy.name);
+                Console.WriteLine("You slayed the " + _currentEnemy.Name);
                 Console.ReadKey(true);
                 Console.Clear();
                 _currentEnemyIndex++;
