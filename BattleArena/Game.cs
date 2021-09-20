@@ -5,10 +5,18 @@ using System.Text;
 namespace BattleArena
 {
 
+    public enum ItemType
+    { 
+        DEFENSE,
+        ATTACK,
+        NONE
+    }
+
     public struct Item
     {
         public string Name;
         public float StatBoost;
+        public ItemType Type;
     }
 
     class Game
@@ -24,10 +32,36 @@ namespace BattleArena
         private Item[] _knightItems;
 
         /// <summary>
+        /// Function takes in an array of integers and adds on more integers to the array.
+        /// </summary>
+        /// <param name="arr">Array of any size</param>
+        /// <param name="value">numbers to be added to the array</param>
+        /// <returns>The new array that has all of the values in the old array and the second argument</returns>
+        int[] AppendToArray(int[] arr, int value)
+        {
+            //Create a new array with one more slot than the old array
+            int[] newArray = new int[arr.Length + 1];
+
+            //Copy the values from the old array into the new array
+            for (int i = 0; i < arr.Length; i++)
+            {
+                newArray[i] = arr[i];
+            }
+
+           newArray[newArray.Length - 1] = value;
+
+            return newArray;
+        }
+
+        /// <summary>
         /// Function that starts the main game loop
         /// </summary>
         public void Run()
         {
+            int[] numbers = new int[] { 1, 2, 3, 4 };
+
+            numbers = AppendToArray(numbers, 5);
+
             Start();
 
             while(!_gameOver)
@@ -52,12 +86,12 @@ namespace BattleArena
         public void InitializeItems()
         {
             //Wizard items
-            Item bigWand = new Item { Name = "Big Wand", StatBoost = 5 };
-            Item bigShield = new Item { Name = "Big Shield", StatBoost = 15 };
+            Item bigWand = new Item { Name = "Big Wand", StatBoost = 5, ItemType = 1 };
+            Item bigShield = new Item { Name = "Big Shield", StatBoost = 15, ItemType = 0 };
 
             //Knight items
-            Item wand = new Item { Name = "Wand", StatBoost = 1025 };
-            Item shoes = new Item { Name = "Shoes", StatBoost = 9000.05f };
+            Item wand = new Item { Name = "Wand", StatBoost = 1025, ItemType = 1 };
+            Item shoes = new Item { Name = "Shoes", StatBoost = 9000.05f, ItemType = 0 };
 
             //Initialize arrays
             _wizardItems = new Item[] { bigWand, bigShield };
@@ -73,13 +107,13 @@ namespace BattleArena
             _currentEnemyIndex = 0;
 
             //Enemy 1 stats
-            Entity fraawg = new Entity("Fraawg", 42590, 15, 573);
+            Entity fraawg = new Entity("Fraawg", 42, 15, 57);
 
             //Enemy 2 stats
-            Entity sassafrazz = new Entity("Sassafrazzz", 745, 1738, 5907);
+            Entity sassafrazz = new Entity("Sassafrazzz", 74, 17, 59);
 
             //Enemy 2 stats
-            Entity wompus = new Entity("Wompus with Gun", 999, 55, 3000);
+            Entity wompus = new Entity("Wompus with Gun", 99, 55, 30);
 
             //Enemies are put into an array
             _enemies = new Entity[] { fraawg, sassafrazz, wompus };
@@ -126,7 +160,38 @@ namespace BattleArena
                 {
                     Console.WriteLine((i + 1) + ". " + options[i]);
                 }
+                Console.Write("> ");
+
+                //Get input from player
+                input = Console.ReadLine();
+
+                //If the player typed an int...
+                if (int.TryParse(input, out inputReceived))
+                {
+                    //...decrement the input and check if it's within the bounds of the array
+                    inputReceived--;
+                    if(inputReceived < 0 || inputReceived >= options.Length)
+                    {
+                        //Set input received to be the default value
+                        inputReceived = -1;
+                        //Display error message
+                        Console.WriteLine("Invalid Input");
+                        Console.ReadKey(true);
+                    }
+                }
+                //If the player didn't type an int
+                else
+                {
+                    //Set input received to be the default value
+                    inputReceived = -1;
+                    Console.WriteLine("Invalid Input");
+                    Console.ReadKey(true);
+                }
+
+                Console.Clear();
+
             }
+            return inputReceived;
         }
 
         /// <summary>
@@ -164,14 +229,14 @@ namespace BattleArena
             int choice = GetInput("Play Again?", "Yes", "No");
 
             //If player chooses to play again...
-            if(choice == 1)
+            if(choice == 0)
             {
                 //...set scene back to 0, which asks for player name
                 _currentScene = 0;
                 InitializeEnemies();
             }
             //If player chooses to quit the game...
-            else
+            else if (choice == 1)
             {
                 //...set gameOver to true end the game.
                 _gameOver = true;
@@ -196,7 +261,7 @@ namespace BattleArena
             int choice = GetInput("You have entered " + _playerName + " . Are you sure you want to keep this name?", "Yes", "No");
 
             //If player has choosen to keep their name...
-            if (choice == 1)
+            if (choice == 0)
             {
                 //...continue on 
                 _currentScene++;
@@ -215,16 +280,16 @@ namespace BattleArena
             int choice = GetInput("Please choose a class", "Wizard", "Knight");
 
             //If player chooses the class Wizard...
-            if (choice == 1)
+            if (choice == 0)
             {
                 //...player stats for Wizard
-                _player = new Player(_playerName, 50, 25000000, 50000000, _wizardItems);
+                _player = new Player(_playerName, 50, 25, 50, _wizardItems);
 
                 //Updates current scene
                 _currentScene++;
             }
             //If player chooses the class Knight
-            else if (choice == 2)
+            else if (choice == 1)
             {
                 //...player stats for Knight
                 _player = new Player(_playerName, 75, 15, 10, _knightItems);
@@ -249,6 +314,20 @@ namespace BattleArena
 
         }
 
+
+        public void DisplayEquipItemMenu()
+        {
+            //Get item index
+            int choice = GetInput("Select an item to equip.", _player.GetItemNames());
+
+            //Equip item at given index
+            if (!_player.TryEquipItem(choice))
+                Console.WriteLine("You couldn't fine that item in your bag.");
+
+            //Print feedback
+            Console.WriteLine("You equipped " + _player.CurrentItem.Name + "!");
+        }
+
         /// <summary>
         /// Simulates one turn in the current monster fight
         /// </summary>
@@ -259,10 +338,10 @@ namespace BattleArena
             DisplayStats(_player);
             DisplayStats(_currentEnemy);
 
-            int choice = GetInput("A " + _currentEnemy.Name + " approaches you. What do you do?", "Attack", "Equip Item");
+            int choice = GetInput("A " + _currentEnemy.Name + " approaches you. What do you do?", "Attack", "Equip Item", "Remove current item");
 
             //If player chooses to attack the enemy...
-            if (choice == 1)
+            if (choice == 0)
             {
                 //...player attacks and deals damage to enemy
                 damageDealt = _player.Attack(_currentEnemy);
@@ -270,9 +349,9 @@ namespace BattleArena
 
             }
             //Otherwise if player dicides to dodge the enemy...
-            else if (choice == 2)
+            else if (choice == 1)
             {
-                Console.WriteLine("You dodged the trolls attack");
+                DisplayEquipItemMenu();
                 Console.ReadKey(true);
                 Console.Clear();
                 return;
