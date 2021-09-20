@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace BattleArena
 {
@@ -86,12 +87,12 @@ namespace BattleArena
         public void InitializeItems()
         {
             //Wizard items
-            Item bigWand = new Item { Name = "Big Wand", StatBoost = 5, ItemType = 1 };
-            Item bigShield = new Item { Name = "Big Shield", StatBoost = 15, ItemType = 0 };
+            Item bigWand = new Item { Name = "Big Wand", StatBoost = 5, Type = ItemType.ATTACK };
+            Item bigShield = new Item { Name = "Big Shield", StatBoost = 15, Type = ItemType.DEFENSE };
 
             //Knight items
-            Item wand = new Item { Name = "Wand", StatBoost = 1025, ItemType = 1 };
-            Item shoes = new Item { Name = "Shoes", StatBoost = 9000.05f, ItemType = 0 };
+            Item wand = new Item { Name = "Wand", StatBoost = 1025, Type = ItemType.ATTACK };
+            Item shoes = new Item { Name = "Shoes", StatBoost = 9000.05f, Type = ItemType.DEFENSE };
 
             //Initialize arrays
             _wizardItems = new Item[] { bigWand, bigShield };
@@ -137,6 +138,22 @@ namespace BattleArena
         {
             Console.WriteLine("Goodbye");
             Console.ReadKey(true);
+        }
+
+        public void Save()
+        {
+            //Create a new stream writer
+            StreamWriter writer = new StreamWriter("SaveData.txt");
+
+            //Save current enemy index
+            writer.WriteLine(_currentEnemyIndex);
+
+            //Save player and enemy stats
+            _player.Save(writer);
+            _currentEnemy.Save(writer);
+
+            //Close writer when done saving
+            writer.Close();
         }
 
         /// <summary>
@@ -338,7 +355,7 @@ namespace BattleArena
             DisplayStats(_player);
             DisplayStats(_currentEnemy);
 
-            int choice = GetInput("A " + _currentEnemy.Name + " approaches you. What do you do?", "Attack", "Equip Item", "Remove current item");
+            int choice = GetInput("A " + _currentEnemy.Name + " approaches you. What do you do?", "Attack", "Equip Item", "Remove current item", "Save");
 
             //If player chooses to attack the enemy...
             if (choice == 0)
@@ -356,9 +373,32 @@ namespace BattleArena
                 Console.Clear();
                 return;
             }
+            else if (choice == 2)
+            {
+                if(!_player.TryRemoveCurrentItem())
+                {
+                    Console.WriteLine("You don't have anything equipped.");
+                }
+                else
+                {
+                    Console.WriteLine("You placed the item in your bag.");
+                }
+
+                Console.ReadKey(true);
+                Console.Clear();
+                return;
+            }
+            else if (choice == 3)
+            {
+                Save();
+                Console.WriteLine("Saved Game");
+                Console.ReadKey(true);
+                Console.Clear();
+                return;
+            }
 
             damageDealt = _currentEnemy.Attack(_player);
-            Console.WriteLine("The " + _currentEnemy.Name + " dealt" + damageDealt);
+            Console.WriteLine("The " + _currentEnemy.Name + " dealt " + damageDealt);
 
             Console.ReadKey(true);
             Console.Clear();
