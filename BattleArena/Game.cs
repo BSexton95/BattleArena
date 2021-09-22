@@ -28,6 +28,11 @@ namespace BattleArena
         public ItemType Type;
     }
 
+    public struct ShopItems
+    {
+        public string Name;
+        public int Cost;
+    }
     class Game
     {
         private bool _gameOver;
@@ -39,6 +44,7 @@ namespace BattleArena
         private string _playerName;
         private Item[] _wizardItems;
         private Item[] _knightItems;
+        private Shop _shop;
 
         /// <summary>
         /// Function takes in an array of integers and adds on more integers to the array.

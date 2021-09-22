@@ -11,6 +11,8 @@ namespace BattleArena
         private Item _currentItem;
         private int _currentItemIndex;
         private string _job;
+        private int _gold;
+        private ShopItems[] _inventory;
 
         public override float AttackPower
         {
@@ -55,6 +57,11 @@ namespace BattleArena
             }
         }
 
+        public int Gold
+        {
+            get { return _gold; }
+        }
+
         public Player()
         {
             _items = new Item[0];
@@ -77,6 +84,31 @@ namespace BattleArena
             _currentItemIndex = -1;
         }
 
+        public Player(int gold)
+        {
+            _gold = gold;
+            _inventory = new ShopItems[0];
+        }
+
+        /// <summary>
+        /// Allows player to by an item from shop and adds the item to the players inventory
+        /// </summary>
+        /// <param name="item"></param>
+        public void Buy(ShopItems item)
+        {
+            ShopItems[] inventory = new ShopItems[_inventory.Length + 1];
+
+            for (int i = 0; i < _inventory.Length; i++)
+            {
+                inventory[i] = _inventory[i];
+            }
+
+            inventory[_inventory.Length] = item;
+
+            _inventory = inventory;
+
+            _gold -= item.Cost;
+        }
         /// <summary>
         /// Sets the item at the given index to be the current item
         /// </summary>
