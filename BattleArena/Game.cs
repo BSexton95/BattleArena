@@ -18,6 +18,7 @@ namespace BattleArena
     { 
         DEFENSE,
         ATTACK,
+        HEALTH,
         NONE
     }
 
@@ -32,6 +33,8 @@ namespace BattleArena
     {
         public string Name;
         public int Cost;
+        public ItemType Type;
+        public float StatBoost;
     }
     class Game
     {
@@ -108,9 +111,18 @@ namespace BattleArena
             Item wand = new Item { Name = "Wand", StatBoost = 1025, Type = ItemType.ATTACK };
             Item shoes = new Item { Name = "Shoes", StatBoost = 9000.05f, Type = ItemType.DEFENSE };
 
+            //Initialize items in shop
+            ShopItems strongSword = new ShopItems { Name = "Strong Sword - 500", Cost = 500, Type = ItemType.ATTACK, StatBoost = 20};
+            ShopItems lightShield = new ShopItems { Name = "Light Shield - 20", Cost = 20, Type = ItemType.DEFENSE, StatBoost = 10 };
+            ShopItems healthPotion = new ShopItems { Name = "Health Potion - 30", Cost = 30, Type = ItemType.HEALTH, StatBoost = 30 };
+
             //Initialize arrays
             _wizardItems = new Item[] { bigWand, bigShield };
             _knightItems = new Item[] { wand, shoes };
+
+            //Initialize shop array
+            ShopItems[] _inventory = new ShopItems[] { strongSword, lightShield, healthPotion };
+            _shop = new Shop(_inventory);
         }
 
         /// <summary>
