@@ -111,7 +111,7 @@ namespace BattleArena
         }
 
         /// <returns>List of items in the players inventory</returns>
-        public string[] GetItemNames()
+        public string[] GetItemsInInvetoryNames()
         {
             string[] itemNames = new string[_inventory.Length + 1];
 
@@ -185,6 +185,14 @@ namespace BattleArena
             writer.WriteLine(_job);
             base.Save(writer);
             writer.WriteLine(_currentItemIndex);
+            writer.WriteLine(_gold);
+            writer.WriteLine(_inventory.Length);
+
+            for(int i = 0; i < _inventory.Length; i++)
+            {
+                //writer.WriteLine(_inventory.Name);
+               // writer.WriteLine(_inventory.Cost);
+            }
         }
 
         public override bool Load(StreamReader reader)

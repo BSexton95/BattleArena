@@ -15,7 +15,7 @@ namespace BattleArena
     }
 
     public enum ItemType
-    { 
+    {
         DEFENSE,
         ATTACK,
         HEALTH,
@@ -66,7 +66,7 @@ namespace BattleArena
                 newArray[i] = arr[i];
             }
 
-           newArray[newArray.Length - 1] = value;
+            newArray[newArray.Length - 1] = value;
 
             return newArray;
         }
@@ -82,7 +82,7 @@ namespace BattleArena
 
             Start();
 
-            while(!_gameOver)
+            while (!_gameOver)
             {
                 Update();
             }
@@ -112,7 +112,7 @@ namespace BattleArena
             Item shoes = new Item { Name = "Shoes", StatBoost = 9000.05f, Type = ItemType.DEFENSE };
 
             //Initialize items in shop
-            ShopItems strongSword = new ShopItems { Name = "Strong Sword - 500", Cost = 500, Type = ItemType.ATTACK, StatBoost = 20};
+            ShopItems strongSword = new ShopItems { Name = "Strong Sword - 500", Cost = 500, Type = ItemType.ATTACK, StatBoost = 20 };
             ShopItems lightShield = new ShopItems { Name = "Light Shield - 20", Cost = 20, Type = ItemType.DEFENSE, StatBoost = 10 };
             ShopItems healthPotion = new ShopItems { Name = "Health Potion - 30", Cost = 30, Type = ItemType.HEALTH, StatBoost = 30 };
 
@@ -207,11 +207,11 @@ namespace BattleArena
             string job = reader.ReadLine();
 
             //Assign items based on player job
-            if(job == "Wizard")
+            if (job == "Wizard")
             {
                 _player = new Player(_wizardItems);
             }
-            else if(job == "Knight")
+            else if (job == "Knight")
             {
                 _player = new Player(_knightItems);
             }
@@ -222,14 +222,14 @@ namespace BattleArena
 
             _player.Job = job;
 
-            if(!_player.Load(reader))
+            if (!_player.Load(reader))
             {
                 loadSuccessful = false;
             }
 
             //Creat a new instance and try to load the enemy
             _currentEnemy = new Entity();
-            if(!_currentEnemy.Load(reader))
+            if (!_currentEnemy.Load(reader))
             {
                 loadSuccessful = false;
             }
@@ -260,7 +260,7 @@ namespace BattleArena
                 //Print options
                 Console.WriteLine(description);
 
-                for(int i = 0; i < options.Length; i++)
+                for (int i = 0; i < options.Length; i++)
                 {
                     Console.WriteLine((i + 1) + ". " + options[i]);
                 }
@@ -274,7 +274,7 @@ namespace BattleArena
                 {
                     //...decrement the input and check if it's within the bounds of the array
                     inputReceived--;
-                    if(inputReceived < 0 || inputReceived >= options.Length)
+                    if (inputReceived < 0 || inputReceived >= options.Length)
                     {
                         //Set input received to be the default value
                         inputReceived = -1;
@@ -303,7 +303,7 @@ namespace BattleArena
         /// </summary>
         void DisplayCurrentScene()
         {
-            switch(_currentScene)
+            switch (_currentScene)
             {
                 case Scene.STARTMENU:
                     DisplayStartMenu();
@@ -336,7 +336,7 @@ namespace BattleArena
             int choice = GetInput("Play Again?", "Yes", "No");
 
             //If player chooses to play again...
-            if(choice == 0)
+            if (choice == 0)
             {
                 //...set scene back to 0, which asks for player name
                 _currentScene = 0;
@@ -361,7 +361,7 @@ namespace BattleArena
             }
             else if (choice == 1)
             {
-                if(Load())
+                if (Load())
                 {
                     Console.WriteLine("Load Successful!");
                     Console.ReadKey(true);
@@ -471,7 +471,7 @@ namespace BattleArena
             DisplayStats(_player);
             DisplayStats(_currentEnemy);
 
-            int choice = GetInput("A " + _currentEnemy.Name + " approaches you. What do you do?", "Attack", "Equip Item", "Remove current item", "Save");
+            int choice = GetInput("A " + _currentEnemy.Name + " approaches you. What do you do?", "Attack", "Equip Item", "Remove current item", "Open Shop", "Save");
 
             //If player chooses to attack the enemy...
             if (choice == 0)
@@ -491,7 +491,7 @@ namespace BattleArena
             }
             else if (choice == 2)
             {
-                if(!_player.TryRemoveCurrentItem())
+                if (!_player.TryRemoveCurrentItem())
                 {
                     Console.WriteLine("You don't have anything equipped.");
                 }
@@ -505,6 +505,10 @@ namespace BattleArena
                 return;
             }
             else if (choice == 3)
+            {
+                DisplayShopMenu();
+            }
+            else if (choice == 4)
             {
                 Save();
                 Console.WriteLine("Saved Game");
@@ -521,12 +525,94 @@ namespace BattleArena
         }
 
         /// <summary>
+        /// Function adds two extra options, save game and exit game, after displaying the shops items
+        /// </summary>
+        /// <returns>The new array that has save game and exit game options</returns>
+        private string[] GetShopMenuOptions()
+        {
+            //Create new array
+            string[] shopMenuOptions = new string[_shop.GetItemNames().Length];
+
+            //Copy everthing from old array to the new array
+            for (int i = 0; i < _shop.GetItemNames().Length; i++)
+            {
+                shopMenuOptions[i] = _shop.GetItemNames()[i];
+            }
+
+            //Create another array with two extra slots
+            string[] addedOptions = new string[shopMenuOptions.Length + 1];
+
+            //Again copy everthing from the previous array the a new array
+            for (int i = 0; i < shopMenuOptions.Length; i++)
+            {
+                addedOptions[i] = shopMenuOptions[i];
+            }
+
+            //Add an exit game to the array
+            addedOptions[shopMenuOptions.Length] = "Go Back to Battle";
+
+            //Set the old array equal to the new array
+            shopMenuOptions = addedOptions;
+
+            //Returns the list of all options in the shop
+            return shopMenuOptions;
+        }
+
+        /// <summary>
+        /// Displays the players 
+        /// </summary>
+        private void DisplayShopMenu()
+        {
+            Console.WriteLine("Your Gold: " + _player.Gold);
+            Console.WriteLine("Your Inventory: ");
+            Console.WriteLine("");
+
+            string[] playerInventory = _player.GetItemNames();
+
+            for (int i = 0; i < _player.GetItemNames().Length; i++)
+            {
+                Console.WriteLine(playerInventory[i]);
+            }
+
+            //Asks player what they would like to purchase and displays all items
+            int choice = GetInput("What would you like to purchase?", GetShopMenuOptions());
+
+            //If player buys a sword...
+            if (choice == 0)
+            {
+                //...shop sells player the sword
+                Console.WriteLine("You have purchased a sword!");
+                _shop.Sell(_player, 0);
+            }
+            //If player buys shield...
+            else if (choice == 1)
+            {
+                //...shop sells player the sword
+                Console.WriteLine("You have purchased a shield!");
+                _shop.Sell(_player, 1);
+            }
+            //If player buys a health potion...
+            else if (choice == 2)
+            {
+                //...shop sells the player the health potion
+                Console.WriteLine("You have purchased a health potion!");
+                _shop.Sell(_player, 2);
+            }
+            //If player saves game...
+            else if (choice == 3)
+            {
+               
+                return;
+            }
+        }
+
+        /// <summary>
         /// Checks to see if either the player or the enemy has won the current battle.
         /// Updates the game based on who won the battle..
         /// </summary>
         void CheckBattleResults()
         {
-            if(_player.Health <= 0)
+            if (_player.Health <= 0)
             {
                 Console.WriteLine("You were slain...");
                 Console.ReadKey(true);
@@ -534,7 +620,7 @@ namespace BattleArena
 
                 _currentScene = Scene.RESTARTMENU;
             }
-            else if(_currentEnemy.Health <= 0)
+            else if (_currentEnemy.Health <= 0)
             {
                 Console.WriteLine("You slayed the " + _currentEnemy.Name);
                 Console.ReadKey(true);
@@ -549,6 +635,7 @@ namespace BattleArena
                 }
                 _currentEnemy = _enemies[_currentEnemyIndex];
             }
+
         }
     }
 }
