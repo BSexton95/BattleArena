@@ -358,6 +358,7 @@ namespace BattleArena
             if (choice == 0)
             {
                 _currentScene = Scene.NAMECREATION;
+                _player = new Player(100);
             }
             else if (choice == 1)
             {
@@ -480,6 +481,8 @@ namespace BattleArena
                 damageDealt = _player.Attack(_currentEnemy);
                 Console.WriteLine("You dealt " + damageDealt + " damage!");
 
+                damageDealt = _currentEnemy.Attack(_player);
+                Console.WriteLine("The " + _currentEnemy.Name + " dealt " + damageDealt);
             }
             //Otherwise if player dicides to dodge the enemy...
             else if (choice == 1)
@@ -517,8 +520,7 @@ namespace BattleArena
                 return;
             }
 
-            damageDealt = _currentEnemy.Attack(_player);
-            Console.WriteLine("The " + _currentEnemy.Name + " dealt " + damageDealt);
+            
 
             Console.ReadKey(true);
             Console.Clear();
@@ -531,12 +533,12 @@ namespace BattleArena
         private string[] GetShopMenuOptions()
         {
             //Create new array
-            string[] shopMenuOptions = new string[_shop.GetItemNames().Length];
+            string[] shopMenuOptions = new string[_shop.GetShopItemNames().Length];
 
             //Copy everthing from old array to the new array
-            for (int i = 0; i < _shop.GetItemNames().Length; i++)
+            for (int i = 0; i < _shop.GetShopItemNames().Length; i++)
             {
-                shopMenuOptions[i] = _shop.GetItemNames()[i];
+                shopMenuOptions[i] = _shop.GetShopItemNames()[i];
             }
 
             //Create another array with two extra slots
@@ -567,9 +569,9 @@ namespace BattleArena
             Console.WriteLine("Your Inventory: ");
             Console.WriteLine("");
 
-            string[] playerInventory = _player.GetItemNames();
+            string[] playerInventory = _player.GetItemsInInventoryNames();
 
-            for (int i = 0; i < _player.GetItemNames().Length; i++)
+            for (int i = 0; i < _player.GetItemsInInventoryNames().Length; i++)
             {
                 Console.WriteLine(playerInventory[i]);
             }
@@ -583,6 +585,7 @@ namespace BattleArena
                 //...shop sells player the sword
                 Console.WriteLine("You have purchased a sword!");
                 _shop.Sell(_player, 0);
+                return;
             }
             //If player buys shield...
             else if (choice == 1)
@@ -590,6 +593,7 @@ namespace BattleArena
                 //...shop sells player the sword
                 Console.WriteLine("You have purchased a shield!");
                 _shop.Sell(_player, 1);
+                return;
             }
             //If player buys a health potion...
             else if (choice == 2)
@@ -597,11 +601,11 @@ namespace BattleArena
                 //...shop sells the player the health potion
                 Console.WriteLine("You have purchased a health potion!");
                 _shop.Sell(_player, 2);
+                return;
             }
             //If player saves game...
             else if (choice == 3)
             {
-               
                 return;
             }
         }

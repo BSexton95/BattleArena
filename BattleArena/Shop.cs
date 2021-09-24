@@ -42,7 +42,7 @@ namespace BattleArena
         }
 
         /// <returns>List of items in the shop</returns>
-        public string[] GetItemNames()
+        public string[] GetShopItemNames()
         {
             //Create a new array
             string[] itemNames = new string[_inventory.Length];

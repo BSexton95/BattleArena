@@ -111,7 +111,7 @@ namespace BattleArena
         }
 
         /// <returns>List of items in the players inventory</returns>
-        public string[] GetItemsInInvetoryNames()
+        public string[] GetItemsInInventoryNames()
         {
             string[] itemNames = new string[_inventory.Length + 1];
 
