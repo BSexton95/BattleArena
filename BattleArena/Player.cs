@@ -109,6 +109,20 @@ namespace BattleArena
 
             _gold -= item.Cost;
         }
+
+        /// <returns>List of items in the players inventory</returns>
+        public string[] GetItemNames()
+        {
+            string[] itemNames = new string[_inventory.Length + 1];
+
+            for (int i = 0; i < _inventory.Length; i++)
+            {
+                itemNames[i] = _inventory[i].Name;
+            }
+
+            return itemNames;
+        }
+
         /// <summary>
         /// Sets the item at the given index to be the current item
         /// </summary>
