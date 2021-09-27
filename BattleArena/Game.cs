@@ -318,25 +318,35 @@ namespace BattleArena
 
         }
 
+        /// <summary>
+        /// Displays the start of game and askes player if they want to start new game or load a saved game.
+        /// </summary>
         public void DisplayStartMenu()
         {
             int choice = GetInput("Welcome to Battle Arena!", "Start New Game", "Load Game");
 
+            //If player chooses to start game...
             if (choice == 0)
             {
+                //...current scene is set to the very first scene, which is to create a name.
                 _currentScene = Scene.NAMECREATION;
             }
+            //Player wants to load game...
             else if (choice == 1)
             {
+                //If load is successful...
                 if (Load())
                 {
+                    //...Displays print that load was successful and sets scene to battle
                     Console.WriteLine("Load Successful!");
                     Console.ReadKey(true);
                     Console.Clear();
                     _currentScene = Scene.BATTLE;
                 }
+                //If load was not successful...
                 else
                 {
+                    //...Displays print that load failed
                     Console.WriteLine("Load Failed!");
                     Console.ReadKey(true);
                     Console.Clear();
@@ -453,20 +463,24 @@ namespace BattleArena
                 damageDealt = _currentEnemy.Attack(_player);
                 Console.WriteLine("The " + _currentEnemy.Name + " dealt " + damageDealt);
             }
-            //Otherwise if player dicides to dodge the enemy...
+            //If player chooses to equip an item from their inventory...
             else if (choice == 1)
             {
+                //...display items in inventory to select from.
                 DisplayEquipItemMenu();
                 Console.ReadKey(true);
                 Console.Clear();
                 return;
             }
+            //If player removes their current item...
             else if (choice == 2)
             {
+                //...Trys to remove item
                 if (!_player.TryRemoveCurrentItem())
                 {
                     Console.WriteLine("You don't have anything equipped.");
                 }
+                //...Diplays text that item was put away
                 else
                 {
                     Console.WriteLine("You placed the item in your bag.");
@@ -476,20 +490,22 @@ namespace BattleArena
                 Console.Clear();
                 return;
             }
+            //If player wants to see the shop...
             else if (choice == 3)
             {
+                //...shop items are displayed to player
                 DisplayShopMenu();
             }
+            //If player wants to save game...
             else if (choice == 4)
             {
+                //...game is saved
                 Save();
                 Console.WriteLine("Saved Game");
                 Console.ReadKey(true);
                 Console.Clear();
                 return;
             }
-
-            
 
             Console.ReadKey(true);
             Console.Clear();

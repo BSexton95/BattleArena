@@ -47,25 +47,43 @@ namespace BattleArena
             _attackPower = attackPower;
             _defensePower = defensePower;
         }
-
+        /// <summary>
+        /// Function takes the attack power from entity that is attacking and subtacts if from the defense power
+        /// of the entity that is being attacked then subtracts the damage the entity took from its health.
+        /// </summary>
+        /// <param name="damageAmount">Attacking entitys attack power</param>
+        /// <returns>The amount of damage taken</returns>
         public float TakeDamage(float damageAmount)
         {
             float damageTaken = damageAmount - DefensePower;
 
+            //If the damage taken is less than 0...
             if ( damageTaken < 0)
             {
+                //...then the defending entity took no damage.
                 damageTaken = 0;
             }
 
+            //Set health to the amount of damage taken subtracted from the original health amount.
             _health -= damageTaken;
 
             return damageTaken;
         }
+
+        /// <summary>
+        /// Function calls the take damage function
+        /// </summary>
+        /// <param name="defender">The entity that is defending</param>
+        /// <returns>The damage taken from defender</returns>
         public float Attack(Entity defender)
         {
             return defender.TakeDamage(AttackPower);
         }
 
+        /// <summary>
+        /// Saves entity stats
+        /// </summary>
+        /// <param name="writer">Writes all the current stats in save file</param>
         public virtual void Save(StreamWriter writer)
         {
             writer.WriteLine(_name);
@@ -74,6 +92,11 @@ namespace BattleArena
             writer.WriteLine(_defensePower);
         }
 
+        /// <summary>
+        /// Loads the entity stats that were previously saved
+        /// </summary>
+        /// <param name="reader">reads all the stats that were put in the save file</param>
+        /// <returns>True if load is successful</returns>
         public virtual bool Load(StreamReader reader)
         {
             _name = reader.ReadLine();
