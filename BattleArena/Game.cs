@@ -461,6 +461,7 @@ namespace BattleArena
                 //...player attacks and deals damage to enemy
                 damageDealt = _player.Attack(_currentEnemy);
                 Console.WriteLine("You dealt " + damageDealt + " damage!");
+                CheckBattleResults();
 
             }
             //Otherwise if player dicides to dodge the enemy...
