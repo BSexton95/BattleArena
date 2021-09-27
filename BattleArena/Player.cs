@@ -94,7 +94,7 @@ namespace BattleArena
         /// <param name="item"></param>
         public void Buy(Item item)
         {
-            Item[] inventory = new Item[_inventory.Length + 1];
+            Item[] inventory = new Item[_inventory.Length];
 
             for (int i = 0; i < _inventory.Length; i++)
             {

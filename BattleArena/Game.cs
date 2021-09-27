@@ -69,27 +69,26 @@ namespace BattleArena
             InitializeItems();
         }
 
+        /// <summary>
+        /// Itnitalizes all the items that can be bought in the shop
+        /// </summary>
         public void InitializeItems()
         {
-            //Wizard items
-            Item bigWand = new Item { Name = "Big Wand - 20g", Cost = 20, StatBoost = 5, Type = ItemType.ATTACK };
-            Item bigShield = new Item { Name = "Big Shield - 20g", Cost = 20, StatBoost = 15, Type = ItemType.DEFENSE };
+            //Attack items
+            Item dagger = new Item { Name = "Dagger - 20g", Cost = 20, StatBoost = 10, Type = ItemType.ATTACK };
+            Item sword = new Item { Name = "Sword - 20g", Cost = 20, StatBoost = 10, Type = ItemType.ATTACK };
+            Item heavySword = new Item { Name = "Heavy Sword - 50g", Cost = 500, StatBoost = 30, Type = ItemType.ATTACK  };
 
-            //Knight items
-            Item wand = new Item { Name = "Wand - 20g", Cost = 20, StatBoost = 1025, Type = ItemType.ATTACK };
-            Item shoes = new Item { Name = "Shoes - 20g", Cost = 20, StatBoost = 9000.05f, Type = ItemType.DEFENSE };
+            //Defense items
+            Item armor = new Item { Name = "Armor - 40g", Cost = 20, StatBoost = 20, Type = ItemType.DEFENSE };
+            Item shield = new Item { Name = "Shield - 20g", Cost = 20, StatBoost = 15, Type = ItemType.DEFENSE };
+            Item defensePotion = new Item { Name = "Defense Potion - 30g", Cost = 30, StatBoost = 30, Type = ItemType.DEFENSE };
 
-            //Initialize items in shop
-            Item strongSword = new Item { Name = "Strong Sword - 50g", Cost = 500, Type = ItemType.ATTACK, StatBoost = 20 };
-            Item lightShield = new Item { Name = "Light Shield - 20g", Cost = 20, Type = ItemType.DEFENSE, StatBoost = 10 };
-            Item healthPotion = new Item { Name = "Health Potion - 30g", Cost = 30, Type = ItemType.HEALTH, StatBoost = 30 };
-
-            //Initialize arrays
-            _wizardItems = new Item[] { bigWand, bigShield };
-            _knightItems = new Item[] { wand, shoes };
+            //Health item
+            Item healthPotion = new Item { Name = "Health Potion - 30g", Cost = 30, StatBoost = 30, Type = ItemType.HEALTH };
 
             //Initialize shop array
-            Item[] _inventory = new Item[] { strongSword, lightShield, healthPotion, bigWand, bigShield, wand, shoes };
+            Item[] _inventory = new Item[] { heavySword, defensePotion, healthPotion, dagger, shield, sword, armor };
             _shop = new Shop(_inventory);
         }
 
@@ -102,16 +101,16 @@ namespace BattleArena
             _currentEnemyIndex = 0;
 
             //Enemy 1 stats
-            Entity fraawg = new Entity("Fraawg", 42, 15, 10);
+            Entity gremlin = new Entity("Gremlin", 15, 10, 5);
 
             //Enemy 2 stats
-            Entity sassafrazz = new Entity("Sassafrazzz", 74, 17, 10);
+            Entity cyclops = new Entity("Cyclops", 75, 55, 10);
 
             //Enemy 2 stats
-            Entity wompus = new Entity("Wompus with Gun", 99, 55, 10);
+            Entity witch = new Entity("Witch", 60, 40, 55);
 
             //Enemies are put into an array
-            _enemies = new Entity[] { fraawg, sassafrazz, wompus };
+            _enemies = new Entity[] { gremlin, cyclops, witch };
 
             _currentEnemy = _enemies[_currentEnemyIndex];
         }
@@ -175,11 +174,11 @@ namespace BattleArena
             string job = reader.ReadLine();
 
             //Assign items based on player job
-            if (job == "Wizard")
+            if (job == "Titan")
             {
                 _player = new Player(_wizardItems);
             }
-            else if (job == "Knight")
+            else if (job == "Hunter")
             {
                 _player = new Player(_knightItems);
             }
@@ -378,13 +377,13 @@ namespace BattleArena
         /// </summary>
         public void CharacterSelection()
         {
-            int choice = GetInput("Please choose a class", "Wizard", "Knight");
+            int choice = GetInput("Please choose a class", "Titan", "Hunter");
 
             //If player chooses the class Wizard...
             if (choice == 0)
             {
                 //...player stats for Wizard
-                _player = new Player(_playerName, 50, 25, 50, "Wizard", 100);
+                _player = new Player(_playerName, 80, 40, 100, "Titan", 100);
 
                 //Updates current scene
                 _currentScene++;
@@ -393,7 +392,7 @@ namespace BattleArena
             else if (choice == 1)
             {
                 //...player stats for Knight
-                //_player = new Player(_playerName, 75, 15, 20, _knightItems, "Knight", 100);
+                _player = new Player(_playerName, 100, 40, 50, "Hunter", 100);
 
                 //Updates current scene
                 _currentScene++;
@@ -415,16 +414,19 @@ namespace BattleArena
 
         }
 
-
+        /// <summary>
+        /// Function allows player to equip an item that is in their inventory.
+        /// </summary>
         public void DisplayEquipItemMenu()
         {
+
             //Get item index
             int choice = GetInput("Select an item to equip.", _player.GetItemsInInventoryNames());
 
             //Equip item at given index
             if (!_player.TryEquipItem(choice))
                 Console.WriteLine("You couldn't find that item in your bag.");
-
+            
             //Print feedback
             Console.WriteLine("You equipped " + _player.CurrentItem.Name + "!");
         }
