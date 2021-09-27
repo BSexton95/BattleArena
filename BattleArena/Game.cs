@@ -39,8 +39,6 @@ namespace BattleArena
         private int _currentEnemyIndex;
         private Entity _currentEnemy;
         private string _playerName;
-        private Item[] _wizardItems;
-        private Item[] _knightItems;
         private Shop _shop;
 
         /// <summary>
@@ -77,7 +75,7 @@ namespace BattleArena
             //Attack items
             Item dagger = new Item { Name = "Dagger - 20g", Cost = 20, StatBoost = 10, Type = ItemType.ATTACK };
             Item sword = new Item { Name = "Sword - 20g", Cost = 20, StatBoost = 10, Type = ItemType.ATTACK };
-            Item heavySword = new Item { Name = "Heavy Sword - 50g", Cost = 500, StatBoost = 30, Type = ItemType.ATTACK  };
+            Item heavySword = new Item { Name = "Heavy Sword - 50g", Cost = 50, StatBoost = 30, Type = ItemType.ATTACK  };
 
             //Defense items
             Item armor = new Item { Name = "Armor - 40g", Cost = 20, StatBoost = 20, Type = ItemType.DEFENSE };
@@ -107,7 +105,7 @@ namespace BattleArena
             Entity cyclops = new Entity("Cyclops", 75, 55, 10);
 
             //Enemy 2 stats
-            Entity witch = new Entity("Witch", 60, 45, 40);
+            Entity witch = new Entity("Witch", 60, 45, 35);
 
             //Enemies are put into an array
             _enemies = new Entity[] { gremlin, cyclops, witch };
@@ -169,30 +167,10 @@ namespace BattleArena
                 //...return false
                 loadSuccessful = false;
             }
-
+            
             //Load player job
             string job = reader.ReadLine();
-            
-            //Assign items based on player job
-            if (job == "Titan")
-            {
-                _player = new Player(_wizardItems);
-            }
-            else if (job == "Hunter")
-            {
-                _player = new Player(_knightItems);
-            }
-            else
-            {
-                loadSuccessful = false;
-            }
-            
-            _player.Job = job;
 
-            if (!_player.Load(reader))
-            {
-                loadSuccessful = false;
-            }
 
             int gold;
 
@@ -200,6 +178,13 @@ namespace BattleArena
             if(!int.TryParse(reader.ReadLine(), out gold))
             {
                 //...return false
+                loadSuccessful = false;
+            }
+
+            //Create a new instance of player and try to load player
+            _player = new Player(gold);
+            if (!_player.Load(reader))
+            {
                 loadSuccessful = false;
             }
 
@@ -316,6 +301,7 @@ namespace BattleArena
             {
                 //...set scene back to 0, which asks for player name
                 _currentScene = 0;
+                InitializeItems();
                 InitializeEnemies();
             }
             //If player chooses to quit the game...
@@ -332,7 +318,10 @@ namespace BattleArena
         /// </summary>
         public void DisplayStartMenu()
         {
-            int choice = GetInput("Welcome to Battle Arena!", "Start New Game", "Load Game");
+            int choice = GetInput("Have you ever wished to be a great and powerful warrior", "Yes", "No");
+            
+
+            choice = GetInput("Welcome to Battle Arena!", "Start New Game", "Load Game");
 
             //If player chooses to start game...
             if (choice == 0)
@@ -425,10 +414,10 @@ namespace BattleArena
         void DisplayStats(Entity character)
         {
 
-            Console.WriteLine("Name " + character.Name);
-            Console.WriteLine("Health " + character.Health);
-            Console.WriteLine("Attack Power " + character.AttackPower);
-            Console.WriteLine("Defense Power " + character.DefensePower);
+            Console.WriteLine("Name: " + character.Name);
+            Console.WriteLine("Health: " + character.Health);
+            Console.WriteLine("Attack Power: " + character.AttackPower);
+            Console.WriteLine("Defense Power: " + character.DefensePower);
             Console.WriteLine("");
 
         }

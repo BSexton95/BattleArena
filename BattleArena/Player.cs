@@ -170,15 +170,15 @@ namespace BattleArena
         public override void Save(StreamWriter writer)
         {
             writer.WriteLine(_job);
+            writer.WriteLine(_gold);
             base.Save(writer);
             writer.WriteLine(_currentItemIndex);
-            writer.WriteLine(_gold);
             writer.WriteLine(_inventory.Length);
 
             for(int i = 0; i < _inventory.Length; i++)
             {
-               // writer.WriteLine(_inventory.Name);
-               // writer.WriteLine(_inventory.Cost);
+                writer.WriteLine(_inventory[i].Name);
+                writer.WriteLine(_inventory[i].Cost);
             }
         }
 
@@ -199,7 +199,35 @@ namespace BattleArena
             }
 
             //Return whether or not the item was equipped succesfully
-            return TryEquipItem(_currentItemIndex);
+            //return TryEquipItem(_currentItemIndex);
+
+            int inventoryLength = 0;
+
+            if (!int.TryParse(reader.ReadLine(), out inventoryLength))
+            {
+                return false;
+            }
+
+            _inventory = new Item[inventoryLength];
+
+            
+
+            for (int i = 0; i < _inventory.Length; i++)
+            {
+                _inventory[i].Name = reader.ReadLine();
+
+                if (!int.TryParse(reader.ReadLine(), out _inventory[i].Cost))
+                {
+                    return false;
+                }
+
+
+            }
+
+
+            return true;
+
+
         }
     }
 }
