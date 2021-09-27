@@ -107,7 +107,7 @@ namespace BattleArena
             Entity cyclops = new Entity("Cyclops", 75, 55, 10);
 
             //Enemy 2 stats
-            Entity witch = new Entity("Witch", 60, 40, 55);
+            Entity witch = new Entity("Witch", 60, 45, 40);
 
             //Enemies are put into an array
             _enemies = new Entity[] { gremlin, cyclops, witch };
@@ -172,7 +172,7 @@ namespace BattleArena
 
             //Load player job
             string job = reader.ReadLine();
-
+            
             //Assign items based on player job
             if (job == "Titan")
             {
@@ -186,11 +186,20 @@ namespace BattleArena
             {
                 loadSuccessful = false;
             }
-
+            
             _player.Job = job;
 
             if (!_player.Load(reader))
             {
+                loadSuccessful = false;
+            }
+
+            int gold;
+
+            //If the first line can't be converted into an integer...
+            if(!int.TryParse(reader.ReadLine(), out gold))
+            {
+                //...return false
                 loadSuccessful = false;
             }
 
@@ -462,6 +471,8 @@ namespace BattleArena
 
                 damageDealt = _currentEnemy.Attack(_player);
                 Console.WriteLine("The " + _currentEnemy.Name + " dealt " + damageDealt);
+
+                CheckBattleResults();
             }
             //If player chooses to equip an item from their inventory...
             else if (choice == 1)
@@ -565,34 +576,47 @@ namespace BattleArena
             //Asks player what they would like to purchase and displays all items
             int choice = GetInput("What would you like to purchase?", GetShopMenuOptions());
 
-            //If player buys a sword...
-            if (choice == 0)
+            string[] shopInventory = _shop.GetShopItemNames();
+
+            if (_shop.Sell(_player, choice))
             {
-                //...shop sells player the sword
-                Console.WriteLine("You have purchased a sword!");
-                _shop.Sell(_player, 0);
+                Console.WriteLine("You purchased the " + shopInventory[choice]);
+            }
+            else if (choice == shopInventory.Length)
+            {
                 return;
             }
-            //If player buys shield...
-            else if (choice == 1)
+        }
+
+
+        /// <summary>
+        /// Checks to see if either the player or the enemy has won the current battle.
+        /// Updates the game based on who won the battle..
+        /// </summary>
+        void CheckBattleResults()
+        {
+            if (_player.Health <= 0)
             {
-                //...shop sells player the sword
-                Console.WriteLine("You have purchased a shield!");
-                _shop.Sell(_player, 1);
-                return;
+                Console.WriteLine("You were slain...");
+                Console.ReadKey(true);
+                Console.Clear();
+
+                _currentScene = Scene.STARTMENU;
             }
-            //If player buys a health potion...
-            else if (choice == 2)
+            else if (_currentEnemy.Health <= 0)
             {
-                //...shop sells the player the health potion
-                Console.WriteLine("You have purchased a health potion!");
-                _shop.Sell(_player, 2);
-                return;
-            }
-            //If player saves game...
-            else if (choice == 3)
-            {
-                return;
+                Console.WriteLine("You slayed the " + _currentEnemy.Name);
+                Console.ReadKey(true);
+                Console.Clear();
+                _currentEnemyIndex++;
+
+                if (_currentEnemyIndex >= _enemies.Length)
+                {
+                    _currentScene = Scene.STARTMENU;
+                    Console.WriteLine("You've slain all the enemies! You are a true warrior.");
+                    return;
+                }
+                _currentEnemy = _enemies[_currentEnemyIndex];
             }
         }
     }

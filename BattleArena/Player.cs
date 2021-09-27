@@ -65,11 +65,13 @@ namespace BattleArena
         {
             _currentItem.Name = "Nothing";
             _currentItemIndex = -1;
+            _inventory = new Item[0];
            
         }
 
         public Player(Item[] items) : base()
         {
+            _inventory = new Item[0];
             _currentItem.Name = "Nothing";
             _currentItemIndex = -1;
         }
@@ -94,7 +96,7 @@ namespace BattleArena
         /// <param name="item"></param>
         public void Buy(Item item)
         {
-            Item[] inventory = new Item[_inventory.Length];
+            Item[] inventory = new Item[_inventory.Length + 1];
 
             for (int i = 0; i < _inventory.Length; i++)
             {
@@ -111,7 +113,7 @@ namespace BattleArena
         /// <returns>List of items in the players inventory</returns>
         public string[] GetItemsInInventoryNames()
         {
-            string[] itemNames = new string[_inventory.Length + 1];
+            string[] itemNames = new string[_inventory.Length];
 
             for (int i = 0; i < _inventory.Length; i++)
             {

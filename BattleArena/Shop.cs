@@ -27,6 +27,7 @@ namespace BattleArena
             {
                 //...Display text to tell player they don't have enough gold
                 Console.WriteLine("You don't have enough gold!");
+                return false;
             }
             //Otherwise shop sells item to player
             else
