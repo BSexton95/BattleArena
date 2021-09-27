@@ -12,7 +12,7 @@ namespace BattleArena
         private int _currentItemIndex;
         private string _job;
         private int _gold;
-        private ShopItems[] _inventory;
+        private Item[] _inventory;
 
         public override float AttackPower
         {
@@ -67,6 +67,7 @@ namespace BattleArena
             _items = new Item[0];
             _currentItem.Name = "Nothing";
             _currentItemIndex = -1;
+           
         }
 
         public Player(Item[] items) : base()
@@ -76,27 +77,27 @@ namespace BattleArena
             _currentItemIndex = -1;
         }
 
-        public Player(string name, float health, float attackPower, float defensePower, Item[] items, string jobs) : base(name, health, attackPower, defensePower)
+        public Player(string name, float health, float attackPower, float defensePower, Item[] items, string jobs, int gold) : base(name, health, attackPower, defensePower)
         {
             _items = items;
             _currentItem.Name = "Nothing";
             _job = jobs;
             _currentItemIndex = -1;
+            _inventory = new Item[0];
         }
 
         public Player(int gold)
         {
             _gold = gold;
-            _inventory = new ShopItems[0];
         }
 
         /// <summary>
         /// Allows player to by an item from shop and adds the item to the players inventory
         /// </summary>
         /// <param name="item"></param>
-        public void Buy(ShopItems item)
+        public void Buy(Item item)
         {
-            ShopItems[] inventory = new ShopItems[_inventory.Length + 1];
+            Item[] inventory = new Item[_inventory.Length + 1];
 
             for (int i = 0; i < _inventory.Length; i++)
             {

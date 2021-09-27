@@ -25,17 +25,11 @@ namespace BattleArena
     public struct Item
     {
         public string Name;
-        public float StatBoost;
-        public ItemType Type;
-    }
-
-    public struct ShopItems
-    {
-        public string Name;
         public int Cost;
-        public ItemType Type;
         public float StatBoost;
+        public ItemType Type;
     }
+    
     class Game
     {
         private bool _gameOver;
@@ -112,16 +106,16 @@ namespace BattleArena
             Item shoes = new Item { Name = "Shoes", StatBoost = 9000.05f, Type = ItemType.DEFENSE };
 
             //Initialize items in shop
-            ShopItems strongSword = new ShopItems { Name = "Strong Sword - 500", Cost = 500, Type = ItemType.ATTACK, StatBoost = 20 };
-            ShopItems lightShield = new ShopItems { Name = "Light Shield - 20", Cost = 20, Type = ItemType.DEFENSE, StatBoost = 10 };
-            ShopItems healthPotion = new ShopItems { Name = "Health Potion - 30", Cost = 30, Type = ItemType.HEALTH, StatBoost = 30 };
+            Item strongSword = new Item { Name = "Strong Sword - 500", Cost = 500, Type = ItemType.ATTACK, StatBoost = 20 };
+            Item lightShield = new Item { Name = "Light Shield - 20", Cost = 20, Type = ItemType.DEFENSE, StatBoost = 10 };
+            Item healthPotion = new Item { Name = "Health Potion - 30", Cost = 30, Type = ItemType.HEALTH, StatBoost = 30 };
 
             //Initialize arrays
             _wizardItems = new Item[] { bigWand, bigShield };
             _knightItems = new Item[] { wand, shoes };
 
             //Initialize shop array
-            ShopItems[] _inventory = new ShopItems[] { strongSword, lightShield, healthPotion };
+            Item[] _inventory = new Item[] { strongSword, lightShield, healthPotion };
             _shop = new Shop(_inventory);
         }
 
@@ -358,7 +352,6 @@ namespace BattleArena
             if (choice == 0)
             {
                 _currentScene = Scene.NAMECREATION;
-                _player = new Player(100);
             }
             else if (choice == 1)
             {
@@ -417,7 +410,7 @@ namespace BattleArena
             if (choice == 0)
             {
                 //...player stats for Wizard
-                _player = new Player(_playerName, 50, 25, 50, _wizardItems, "Wizard");
+                _player = new Player(_playerName, 50, 25, 50, _wizardItems, "Wizard", 100);
 
                 //Updates current scene
                 _currentScene++;
@@ -426,7 +419,7 @@ namespace BattleArena
             else if (choice == 1)
             {
                 //...player stats for Knight
-                _player = new Player(_playerName, 75, 15, 20, _knightItems, "Knight");
+                _player = new Player(_playerName, 75, 15, 20, _knightItems, "Knight", 100);
 
                 //Updates current scene
                 _currentScene++;
@@ -608,38 +601,6 @@ namespace BattleArena
             {
                 return;
             }
-        }
-
-        /// <summary>
-        /// Checks to see if either the player or the enemy has won the current battle.
-        /// Updates the game based on who won the battle..
-        /// </summary>
-        void CheckBattleResults()
-        {
-            if (_player.Health <= 0)
-            {
-                Console.WriteLine("You were slain...");
-                Console.ReadKey(true);
-                Console.Clear();
-
-                _currentScene = Scene.RESTARTMENU;
-            }
-            else if (_currentEnemy.Health <= 0)
-            {
-                Console.WriteLine("You slayed the " + _currentEnemy.Name);
-                Console.ReadKey(true);
-                Console.Clear();
-                _currentEnemyIndex++;
-
-                if (_currentEnemyIndex >= _enemies.Length)
-                {
-                    _currentScene = Scene.RESTARTMENU;
-                    Console.WriteLine("You've slain all the enemies! You are a true warrior.");
-                    return;
-                }
-                _currentEnemy = _enemies[_currentEnemyIndex];
-            }
-
         }
     }
 }
