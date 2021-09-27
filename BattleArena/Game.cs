@@ -44,36 +44,10 @@ namespace BattleArena
         private Shop _shop;
 
         /// <summary>
-        /// Function takes in an array of integers and adds on more integers to the array.
-        /// </summary>
-        /// <param name="arr">Array of any size</param>
-        /// <param name="value">numbers to be added to the array</param>
-        /// <returns>The new array that has all of the values in the old array and the second argument</returns>
-        int[] AppendToArray(int[] arr, int value)
-        {
-            //Create a new array with one more slot than the old array
-            int[] newArray = new int[arr.Length + 1];
-
-            //Copy the values from the old array into the new array
-            for (int i = 0; i < arr.Length; i++)
-            {
-                newArray[i] = arr[i];
-            }
-
-            newArray[newArray.Length - 1] = value;
-
-            return newArray;
-        }
-
-        /// <summary>
         /// Function that starts the main game loop
         /// </summary>
         public void Run()
         {
-            int[] numbers = new int[] { 1, 2, 3, 4 };
-
-            numbers = AppendToArray(numbers, 5);
-
             Start();
 
             while (!_gameOver)
@@ -98,24 +72,24 @@ namespace BattleArena
         public void InitializeItems()
         {
             //Wizard items
-            Item bigWand = new Item { Name = "Big Wand", StatBoost = 5, Type = ItemType.ATTACK };
-            Item bigShield = new Item { Name = "Big Shield", StatBoost = 15, Type = ItemType.DEFENSE };
+            Item bigWand = new Item { Name = "Big Wand - 20g", Cost = 20, StatBoost = 5, Type = ItemType.ATTACK };
+            Item bigShield = new Item { Name = "Big Shield - 20g", Cost = 20, StatBoost = 15, Type = ItemType.DEFENSE };
 
             //Knight items
-            Item wand = new Item { Name = "Wand", StatBoost = 1025, Type = ItemType.ATTACK };
-            Item shoes = new Item { Name = "Shoes", StatBoost = 9000.05f, Type = ItemType.DEFENSE };
+            Item wand = new Item { Name = "Wand - 20g", Cost = 20, StatBoost = 1025, Type = ItemType.ATTACK };
+            Item shoes = new Item { Name = "Shoes - 20g", Cost = 20, StatBoost = 9000.05f, Type = ItemType.DEFENSE };
 
             //Initialize items in shop
-            Item strongSword = new Item { Name = "Strong Sword - 500", Cost = 500, Type = ItemType.ATTACK, StatBoost = 20 };
-            Item lightShield = new Item { Name = "Light Shield - 20", Cost = 20, Type = ItemType.DEFENSE, StatBoost = 10 };
-            Item healthPotion = new Item { Name = "Health Potion - 30", Cost = 30, Type = ItemType.HEALTH, StatBoost = 30 };
+            Item strongSword = new Item { Name = "Strong Sword - 50g", Cost = 500, Type = ItemType.ATTACK, StatBoost = 20 };
+            Item lightShield = new Item { Name = "Light Shield - 20g", Cost = 20, Type = ItemType.DEFENSE, StatBoost = 10 };
+            Item healthPotion = new Item { Name = "Health Potion - 30g", Cost = 30, Type = ItemType.HEALTH, StatBoost = 30 };
 
             //Initialize arrays
             _wizardItems = new Item[] { bigWand, bigShield };
             _knightItems = new Item[] { wand, shoes };
 
             //Initialize shop array
-            Item[] _inventory = new Item[] { strongSword, lightShield, healthPotion };
+            Item[] _inventory = new Item[] { strongSword, lightShield, healthPotion, bigWand, bigShield, wand, shoes };
             _shop = new Shop(_inventory);
         }
 
@@ -410,7 +384,7 @@ namespace BattleArena
             if (choice == 0)
             {
                 //...player stats for Wizard
-                _player = new Player(_playerName, 50, 25, 50, _wizardItems, "Wizard", 100);
+                _player = new Player(_playerName, 50, 25, 50, "Wizard", 100);
 
                 //Updates current scene
                 _currentScene++;
@@ -419,7 +393,7 @@ namespace BattleArena
             else if (choice == 1)
             {
                 //...player stats for Knight
-                _player = new Player(_playerName, 75, 15, 20, _knightItems, "Knight", 100);
+                //_player = new Player(_playerName, 75, 15, 20, _knightItems, "Knight", 100);
 
                 //Updates current scene
                 _currentScene++;
@@ -445,11 +419,11 @@ namespace BattleArena
         public void DisplayEquipItemMenu()
         {
             //Get item index
-            int choice = GetInput("Select an item to equip.", _player.GetItemNames());
+            int choice = GetInput("Select an item to equip.", _player.GetItemsInInventoryNames());
 
             //Equip item at given index
             if (!_player.TryEquipItem(choice))
-                Console.WriteLine("You couldn't fine that item in your bag.");
+                Console.WriteLine("You couldn't find that item in your bag.");
 
             //Print feedback
             Console.WriteLine("You equipped " + _player.CurrentItem.Name + "!");
@@ -558,6 +532,7 @@ namespace BattleArena
         /// </summary>
         private void DisplayShopMenu()
         {
+            
             Console.WriteLine("Your Gold: " + _player.Gold);
             Console.WriteLine("Your Inventory: ");
             Console.WriteLine("");

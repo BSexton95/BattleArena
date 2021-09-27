@@ -7,7 +7,6 @@ namespace BattleArena
 {
     class Player : Entity
     {
-        private Item[] _items;
         private Item _currentItem;
         private int _currentItemIndex;
         private string _job;
@@ -64,7 +63,6 @@ namespace BattleArena
 
         public Player()
         {
-            _items = new Item[0];
             _currentItem.Name = "Nothing";
             _currentItemIndex = -1;
            
@@ -73,24 +71,23 @@ namespace BattleArena
         public Player(Item[] items) : base()
         {
             _currentItem.Name = "Nothing";
-            _items = items;
             _currentItemIndex = -1;
         }
 
-        public Player(string name, float health, float attackPower, float defensePower, Item[] items, string jobs, int gold) : base(name, health, attackPower, defensePower)
+        public Player(string name, float health, float attackPower, float defensePower, string jobs, int gold) : base(name, health, attackPower, defensePower)
         {
-            _items = items;
             _currentItem.Name = "Nothing";
             _job = jobs;
             _currentItemIndex = -1;
             _inventory = new Item[0];
+            _gold = gold;
         }
-
+        
         public Player(int gold)
         {
             _gold = gold;
         }
-
+        
         /// <summary>
         /// Allows player to by an item from shop and adds the item to the players inventory
         /// </summary>
@@ -110,7 +107,7 @@ namespace BattleArena
 
             _gold -= item.Cost;
         }
-
+        
         /// <returns>List of items in the players inventory</returns>
         public string[] GetItemsInInventoryNames()
         {
@@ -123,7 +120,7 @@ namespace BattleArena
 
             return itemNames;
         }
-
+        
         /// <summary>
         /// Sets the item at the given index to be the current item
         /// </summary>
@@ -132,7 +129,7 @@ namespace BattleArena
         public bool TryEquipItem(int index)
         {
             //If the index is out of bounds...
-            if (index >= _items.Length || index < 0)
+            if (index >= _inventory.Length || index < 0)
             {
                 //...return false
                 return false;
@@ -141,7 +138,7 @@ namespace BattleArena
             _currentItemIndex = index;
 
             //Set the current item to be the array at the given index
-            _currentItem = _items[_currentItemIndex];
+            _currentItem = _inventory[_currentItemIndex];
 
             return true;
         }
@@ -167,19 +164,6 @@ namespace BattleArena
 
             return true;
         }
-       
-        /// <returns>Gets the names of all items in the player inventory</returns>
-        public string[] GetItemNames()
-        {
-            string[] itemNames = new string[_items.Length];
-
-            for(int i = 0; i < _items.Length; i++)
-            {
-                itemNames[i] = _items[i].Name;
-            }
-
-            return itemNames;
-        }
 
         public override void Save(StreamWriter writer)
         {
@@ -191,7 +175,7 @@ namespace BattleArena
 
             for(int i = 0; i < _inventory.Length; i++)
             {
-                //writer.WriteLine(_inventory.Name);
+               // writer.WriteLine(_inventory.Name);
                // writer.WriteLine(_inventory.Cost);
             }
         }
