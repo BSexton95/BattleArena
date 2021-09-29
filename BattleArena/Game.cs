@@ -82,10 +82,12 @@ namespace BattleArena
             Item shield = new Item { Name = "Shield - 20g", Cost = 20, StatBoost = 15, Type = ItemType.DEFENSE };
 
             //Health item
-            Item healingPotion = new Item { Name = "Healing Potion - 30g", Cost = 30, StatBoost = 30, Type = ItemType.HEALTH };
+            Item healingBoost = new Item { Name = "Healing Boost - 30g", Cost = 30, StatBoost = 30, Type = ItemType.HEALTH };
+
+            Item goBackToBattle = new Item { Name = "Go Back To Battle", Cost = 0 };
 
             //Initialize shop array
-            Item[] _inventory = new Item[] { heavySword, healingPotion, dagger, shield, sword, armor };
+            Item[] _inventory = new Item[] { heavySword, healingBoost, dagger, shield, sword, armor, goBackToBattle };
             _shop = new Shop(_inventory);
         }
 
@@ -557,27 +559,13 @@ namespace BattleArena
                 shopMenuOptions[i] = _shop.GetShopItemNames()[i];
             }
 
-            //Create another array with two extra slots
-            string[] addedOptions = new string[shopMenuOptions.Length + 1];
-
-            //Again copy everthing from the previous array the a new array
-            for (int i = 0; i < shopMenuOptions.Length; i++)
-            {
-                addedOptions[i] = shopMenuOptions[i];
-            }
-
-            //Add an exit game to the array
-            addedOptions[shopMenuOptions.Length] = "Go Back to Battle";
-
-            //Set the old array equal to the new array
-            shopMenuOptions = addedOptions;
-
             //Returns the list of all options in the shop
             return shopMenuOptions;
         }
 
         /// <summary>
-        /// Displays the players 
+        /// Displays the amount of gold they player has and shows their inventory if player has bought anything.
+        /// Displays the shop items to buy.
         /// </summary>
         private void DisplayShopMenu()
         {
@@ -586,10 +574,13 @@ namespace BattleArena
             Console.WriteLine("Your Inventory: ");
             Console.WriteLine("");
 
+            //Create a new array
             string[] playerInventory = _player.GetItemsInInventoryNames();
 
+            //Copy everyting from old array into the new array
             for (int i = 0; i < _player.GetItemsInInventoryNames().Length; i++)
             {
+                //print out everything in the new array
                 Console.WriteLine(playerInventory[i]);
             }
 
@@ -598,8 +589,16 @@ namespace BattleArena
 
             string[] shopInventory = _shop.GetShopItemNames();
 
-            if (_shop.Sell(_player, choice))
+            //If player chooses to back out of shop...
+            if (choice == 6)
             {
+                //...display text that player is going back to the battle.
+                Console.WriteLine("Back to Battle!!");
+            }
+            //If player buys something from shop...
+            else if (_shop.Sell(_player, choice))
+            {
+                //...display text to player that the item was purchased.
                 Console.WriteLine("You purchased the " + shopInventory[choice]);
             }
             else if (choice == shopInventory.Length)

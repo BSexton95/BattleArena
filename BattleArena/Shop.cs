@@ -15,7 +15,7 @@ namespace BattleArena
         }
 
         /// <summary>
-        /// Sells item to player if player has enough gold
+        /// Sells item to player if player have enough gold
         /// </summary>
         /// <param name="player">Read player gold to see if player has enough to by the item</param>
         /// <param name="option">Finds which item the player choose to buy</param>

@@ -149,11 +149,15 @@ namespace BattleArena
                 return false;
             }
 
+
             _currentItemIndex = index;
 
             //Set the current item to be the array at the given index
             _currentItem = _inventory[_currentItemIndex];
 
+            Console.WriteLine("Be sure to unequip this item if you would like to use another item");
+            Console.ReadKey(true);
+            Console.Clear();
 
             return true;
         }
