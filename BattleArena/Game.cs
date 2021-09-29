@@ -320,6 +320,32 @@ namespace BattleArena
         {
             int choice = GetInput("Have you ever wished to be a great and powerful warrior", "Yes", "No");
             
+            if (choice == 0)
+            {
+                Console.WriteLine("Of course you would. Who wouldn't wish to be a great and powerfull warrior?" +
+                    "\n Well here is your chance to prove to you and everyone esle what a great warrior you are.");
+                Console.ReadKey(true);
+                Console.Clear();
+
+                Console.WriteLine("Welcome to the battle arena where you will fight to prove you are a true warrior." +
+                    "\n you have four opponents to face to prove you have what it takes. If you need help you have the shop" +
+                    "\n to help boost your defense and attack. You only have 100 gold to spend so spend wisely.");
+                Console.ReadKey(true);
+                Console.Clear();
+
+                Console.WriteLine("I wish you luck my friend. Fight well!!");
+                Console.ReadKey(true);
+                Console.Clear();
+
+            }
+            else if (choice == 1)
+            {
+                Console.WriteLine("Well you are in the wrong place my friend. Have a nice and boring life.");
+                Console.ReadKey(true);
+                Console.Clear();
+
+                DisplayMainMenu();
+            }
 
             choice = GetInput("Welcome to Battle Arena!", "Start New Game", "Load Game");
 
