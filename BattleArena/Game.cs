@@ -318,40 +318,46 @@ namespace BattleArena
         /// </summary>
         public void DisplayStartMenu()
         {
-            int choice = GetInput("Have you ever wished to be a great and powerful warrior", "Yes", "No");
-            
-            if (choice == 0)
-            {
-                Console.WriteLine("Of course you would. Who wouldn't wish to be a great and powerfull warrior?" +
-                    "\n Well here is your chance to prove to you and everyone esle what a great warrior you are.");
-                Console.ReadKey(true);
-                Console.Clear();
+           
 
-                Console.WriteLine("Welcome to the battle arena where you will fight to prove you are a true warrior." +
-                    "\n you have four opponents to face to prove you have what it takes. If you need help you have the shop" +
-                    "\n to help boost your defense and attack. You only have 100 gold to spend so spend wisely.");
-                Console.ReadKey(true);
-                Console.Clear();
-
-                Console.WriteLine("I wish you luck my friend. Fight well!!");
-                Console.ReadKey(true);
-                Console.Clear();
-
-            }
-            else if (choice == 1)
-            {
-                Console.WriteLine("Well you are in the wrong place my friend. Have a nice and boring life.");
-                Console.ReadKey(true);
-                Console.Clear();
-
-                DisplayMainMenu();
-            }
-
-            choice = GetInput("Welcome to Battle Arena!", "Start New Game", "Load Game");
+            int choice = GetInput("Welcome to Battle Arena!", "Start New Game", "Load Game");
 
             //If player chooses to start game...
             if (choice == 0)
             {
+                choice = GetInput("Have you ever wished to be a great and powerful warrior?", "Yes", "No");
+
+                //If player chooses yes...
+                if (choice == 0)
+                {
+                    //...display introduction to player
+                    Console.WriteLine("Of course you would. Who wouldn't wish to be a great and powerfull warrior?" +
+                        "\n Well here is your chance to prove to you and everyone esle what a great warrior you are.");
+                    Console.ReadKey(true);
+                    Console.Clear();
+
+                    Console.WriteLine("Welcome to the battle arena where you will fight to prove you are a true warrior." +
+                        "\n you have four opponents to face to prove you have what it takes. If you need help you have the shop" +
+                        "\n to help boost your defense and attack. You only have 100 gold to spend so spend wisely.");
+                    Console.ReadKey(true);
+                    Console.Clear();
+
+                    Console.WriteLine("I wish you luck my friend. Fight well!!");
+                    Console.ReadKey(true);
+                    Console.Clear();
+
+                }
+                //If player chooses no...
+                else if (choice == 1)
+                {
+                    //...display text to player and set call the display main menu function to restart the game if they wish
+                    Console.WriteLine("Well you are in the wrong place my friend. Have a nice and boring life.");
+                    Console.ReadKey(true);
+                    Console.Clear();
+
+                    DisplayMainMenu();
+                }
+
                 //...current scene is set to the very first scene, which is to create a name.
                 _currentScene = Scene.NAMECREATION;
             }
@@ -392,7 +398,7 @@ namespace BattleArena
             Console.Clear();
 
             //Askes player if they are sure that want to keep the name they have choosen.
-            int choice = GetInput("You have entered " + _playerName + " . Are you sure you want to keep this name?", "Yes", "No");
+            int choice = GetInput("You have entered " + _playerName + ". Are you sure you want to keep this name?", "Yes", "No");
 
             //If player has choosen to keep their name...
             if (choice == 0)
@@ -627,8 +633,8 @@ namespace BattleArena
 
                 if (_currentEnemyIndex >= _enemies.Length)
                 {
-                    _currentScene = Scene.STARTMENU;
                     Console.WriteLine("You've slain all the enemies! You are a true warrior.");
+                    _currentScene = Scene.RESTARTMENU;
                     return;
                 }
                 _currentEnemy = _enemies[_currentEnemyIndex];

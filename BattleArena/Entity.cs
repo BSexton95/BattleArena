@@ -17,7 +17,7 @@ namespace BattleArena
             get { return _name; }
         }
 
-        public float Health
+        public  float Health
         {
             get {  return _health; }
         }
