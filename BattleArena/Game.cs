@@ -526,8 +526,9 @@ namespace BattleArena
 
                 if (_currentEnemyIndex >= _enemies.Length)
                 {
-                    _currentScene = Scene.RESTARTMENU;
+                   
                     Console.WriteLine("You've slain all the enemies! You are a true warrior.");
+                    _currentScene = Scene.RESTARTMENU;
                     return;
                 }
                 _currentEnemy = _enemies[_currentEnemyIndex];
