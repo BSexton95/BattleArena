@@ -8,11 +8,23 @@ namespace BattleArena
     class Player : Entity
     {
         private Item _currentItem;
+        private Item _health;
         private int _currentItemIndex;
         private string _job;
         private int _gold;
         private Item[] _inventory;
 
+        public override float Health
+        {
+            get
+            {
+                if(_currentItem.Type == ItemType.HEALTH)
+                {
+                    return base.Health + CurrentItem.StatBoost;
+                }
+                return base.Health;
+            }
+        }
         public override float AttackPower
         {
             get
@@ -141,6 +153,7 @@ namespace BattleArena
 
             //Set the current item to be the array at the given index
             _currentItem = _inventory[_currentItemIndex];
+
 
             return true;
         }

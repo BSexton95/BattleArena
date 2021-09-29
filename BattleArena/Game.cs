@@ -80,13 +80,12 @@ namespace BattleArena
             //Defense items
             Item armor = new Item { Name = "Armor - 40g", Cost = 20, StatBoost = 20, Type = ItemType.DEFENSE };
             Item shield = new Item { Name = "Shield - 20g", Cost = 20, StatBoost = 15, Type = ItemType.DEFENSE };
-            Item defensePotion = new Item { Name = "Defense Potion - 30g", Cost = 30, StatBoost = 30, Type = ItemType.DEFENSE };
 
             //Health item
-            Item healthPotion = new Item { Name = "Health Potion - 30g", Cost = 30, StatBoost = 30, Type = ItemType.HEALTH };
+            Item healingPotion = new Item { Name = "Healing Potion - 30g", Cost = 30, StatBoost = 30, Type = ItemType.HEALTH };
 
             //Initialize shop array
-            Item[] _inventory = new Item[] { heavySword, defensePotion, healthPotion, dagger, shield, sword, armor };
+            Item[] _inventory = new Item[] { heavySword, healingPotion, dagger, shield, sword, armor };
             _shop = new Shop(_inventory);
         }
 
@@ -99,13 +98,13 @@ namespace BattleArena
             _currentEnemyIndex = 0;
 
             //Enemy 1 stats
-            Entity gremlin = new Entity("Gremlin", 15, 10, 5);
+            Entity gremlin = new Entity("Gremlin", 15, 40, 5);
 
             //Enemy 2 stats
-            Entity cyclops = new Entity("Cyclops", 75, 55, 10);
+            Entity cyclops = new Entity("Cyclops", 50, 55, 10);
 
             //Enemy 2 stats
-            Entity witch = new Entity("Witch", 60, 45, 35);
+            Entity witch = new Entity("Witch", 40, 50, 10);
 
             //Enemies are put into an array
             _enemies = new Entity[] { gremlin, cyclops, witch };
@@ -318,7 +317,6 @@ namespace BattleArena
         /// </summary>
         public void DisplayStartMenu()
         {
-           
 
             int choice = GetInput("Welcome to Battle Arena!", "Start New Game", "Load Game");
 
@@ -346,6 +344,8 @@ namespace BattleArena
                     Console.ReadKey(true);
                     Console.Clear();
 
+                    //...current scene is set to the very first scene, which is to create a name.
+                    _currentScene = Scene.NAMECREATION;
                 }
                 //If player chooses no...
                 else if (choice == 1)
@@ -358,8 +358,7 @@ namespace BattleArena
                     DisplayMainMenu();
                 }
 
-                //...current scene is set to the very first scene, which is to create a name.
-                _currentScene = Scene.NAMECREATION;
+               
             }
             //Player wants to load game...
             else if (choice == 1)
@@ -423,7 +422,7 @@ namespace BattleArena
             if (choice == 0)
             {
                 //...player stats for Wizard
-                _player = new Player(_playerName, 80, 40, 100, "Titan", 100);
+                _player = new Player(_playerName, 80, 60, 30, "Titan", 100);
 
                 //Updates current scene
                 _currentScene++;
@@ -432,7 +431,7 @@ namespace BattleArena
             else if (choice == 1)
             {
                 //...player stats for Knight
-                _player = new Player(_playerName, 100, 40, 50, "Hunter", 100);
+                _player = new Player(_playerName, 100, 40, 30, "Hunter", 100);
 
                 //Updates current scene
                 _currentScene++;
@@ -459,13 +458,13 @@ namespace BattleArena
         /// </summary>
         public void DisplayEquipItemMenu()
         {
-
             //Get item index
             int choice = GetInput("Select an item to equip.", _player.GetItemsInInventoryNames());
 
             //Equip item at given index
             if (!_player.TryEquipItem(choice))
                 Console.WriteLine("You couldn't find that item in your bag.");
+            
             
             //Print feedback
             Console.WriteLine("You equipped " + _player.CurrentItem.Name + "!");
@@ -491,7 +490,7 @@ namespace BattleArena
                 Console.WriteLine("You dealt " + damageDealt + " damage!");
 
                 damageDealt = _currentEnemy.Attack(_player);
-                Console.WriteLine("The " + _currentEnemy.Name + " dealt " + damageDealt);
+                Console.WriteLine("The " + _currentEnemy.Name + " dealt " + damageDealt + "!");
 
                 CheckBattleResults();
             }
