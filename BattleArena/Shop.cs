@@ -6,7 +6,6 @@ namespace BattleArena
 {
     class Shop
     {
-        private int _gold;
         private Item[] _inventory;
 
         public Shop(Item[] inventory)

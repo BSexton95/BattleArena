@@ -84,7 +84,8 @@ namespace BattleArena
             //Health item
             Item healingBoost = new Item { Name = "Healing Boost - 30g", Cost = 30, StatBoost = 30, Type = ItemType.HEALTH };
 
-            Item goBackToBattle = new Item { Name = "Go Back To Battle", Cost = 0 };
+            //Option in the shop for player to go back to battle
+            Item goBackToBattle = new Item { Name = "Go Back To Battle" };
 
             //Initialize shop array
             Item[] _inventory = new Item[] { heavySword, healingBoost, dagger, shield, sword, armor, goBackToBattle };
@@ -132,6 +133,10 @@ namespace BattleArena
             Console.ReadKey(true);
         }
 
+        /// <summary>
+        /// Function saves the current enemy player is battling, the players stats and inventoyr, and the current enemys stats
+        /// to a text file.
+        /// </summary>
         public void Save()
         {
             //Create a new stream writer
@@ -148,6 +153,10 @@ namespace BattleArena
             writer.Close();
         }
 
+        /// <summary>
+        /// Function loads in everthing from players previous save file.
+        /// </summary>
+        /// <returns></returns>
         public bool Load()
         {
             bool loadSuccessful = true;
@@ -394,6 +403,8 @@ namespace BattleArena
             //Ask player for a name
             Console.WriteLine("Welcome to the Battle Arena! What is your fighters name?");
             Console.Write("> ");
+
+            //Set player neme to what the player has entered
             _playerName = Console.ReadLine();
             Console.WriteLine("");
             Console.Clear();
@@ -610,31 +621,42 @@ namespace BattleArena
 
         /// <summary>
         /// Checks to see if either the player or the enemy has won the current battle.
-        /// Updates the game based on who won the battle..
+        /// Updates the game based on who won the battle.
         /// </summary>
         void CheckBattleResults()
         {
+            //If player health drops below 0...
             if (_player.Health <= 0)
             {
+                //...display text that player has been defeated.
                 Console.WriteLine("You were slain...");
                 Console.ReadKey(true);
                 Console.Clear();
 
+                //Set current scene to start menu to ask if they would like to play again.
                 _currentScene = Scene.STARTMENU;
             }
+            //If enemy health drops below 0...
             else if (_currentEnemy.Health <= 0)
             {
+                //...display text that the enemy has been defeated
                 Console.WriteLine("You slayed the " + _currentEnemy.Name);
                 Console.ReadKey(true);
                 Console.Clear();
+
+                //Incremend the current enemy index to go on to the next enemy.
                 _currentEnemyIndex++;
 
+                //If player has slain all the enemies...
                 if (_currentEnemyIndex >= _enemies.Length)
                 {
+                    //...display text that the player has defeated all enemies.
                     Console.WriteLine("You've slain all the enemies! You are a true warrior.");
                     _currentScene = Scene.RESTARTMENU;
                     return;
                 }
+
+                //Set current enemy to the current enemy index
                 _currentEnemy = _enemies[_currentEnemyIndex];
             }
         }

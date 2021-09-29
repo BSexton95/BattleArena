@@ -108,17 +108,22 @@ namespace BattleArena
         /// <param name="item"></param>
         public void Buy(Item item)
         {
+            //Create an array
             Item[] inventory = new Item[_inventory.Length + 1];
 
+            //Copy everthing from old array to new array
             for (int i = 0; i < _inventory.Length; i++)
             {
                 inventory[i] = _inventory[i];
             }
 
+            //Item that was bought is placed in the player inventory
             inventory[_inventory.Length] = item;
 
+            //Set old array equal to new array
             _inventory = inventory;
 
+            //Subtracts the cost of the item from players gold and sets gold to be the new amount.
             _gold -= item.Cost;
         }
         
@@ -184,6 +189,11 @@ namespace BattleArena
             return true;
         }
 
+        /// <summary>
+        /// Saves players job, the amount of gold player has, the item they have equiped if they have an item equiped,
+        /// and the player inventory to text file.
+        /// </summary>
+        /// <param name="writer">Writes to the text file</param>
         public override void Save(StreamWriter writer)
         {
             writer.WriteLine(_job);
@@ -199,6 +209,11 @@ namespace BattleArena
             }
         }
 
+        /// <summary>
+        /// Loads everything from players previous save file
+        /// </summary>
+        /// <param name="reader">Reads from the text file</param>
+        /// <returns>Ture if everything was loaded properly</returns>
         public override bool Load(StreamReader reader)
         {
             //If the base loading function fails...
@@ -215,20 +230,20 @@ namespace BattleArena
                 return false;
             }
 
-            //Return whether or not the item was equipped succesfully
-            //return TryEquipItem(_currentItemIndex);
-
+            //Initalize the invetory length to be 0.
             int inventoryLength = 0;
 
+            //If reader is not able to load the players inventory...
             if (!int.TryParse(reader.ReadLine(), out inventoryLength))
             {
+                //...load was not successful
                 return false;
             }
-
+            
+            //Create new instence of the players inventory
             _inventory = new Item[inventoryLength];
 
-            
-
+            //Loads the name and cost of the item in players inventory.
             for (int i = 0; i < _inventory.Length; i++)
             {
                 _inventory[i].Name = reader.ReadLine();
