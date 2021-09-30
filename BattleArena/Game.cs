@@ -345,7 +345,7 @@ namespace BattleArena
                     Console.Clear();
 
                     Console.WriteLine("Welcome to the battle arena where you will fight to prove you are a true warrior." +
-                        "\n you have four opponents to face to prove you have what it takes. If you need help you have the shop" +
+                        "\n you have three opponents to face to prove you have what it takes. If you need help you have the shop" +
                         "\n to help boost your defense and attack. You only have 100 gold to spend so spend wisely.");
                     Console.ReadKey(true);
                     Console.Clear();
