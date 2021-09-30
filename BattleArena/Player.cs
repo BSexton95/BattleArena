@@ -103,9 +103,9 @@ namespace BattleArena
         }
         
         /// <summary>
-        /// Allows player to by an item from shop and adds the item to the players inventory
+        /// Allows player to buy an item from shop and adds the item to the players inventory
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">The item being bought from the shop</param>
         public void Buy(Item item)
         {
             //Create an array
@@ -190,7 +190,7 @@ namespace BattleArena
         }
 
         /// <summary>
-        /// Saves players job, the amount of gold player has, the item they have equiped if they have an item equiped,
+        /// Saves players job, the amount of gold player has, the item they have equip if they have an item equip,
         /// and the player inventory to text file.
         /// </summary>
         /// <param name="writer">Writes to the text file</param>
