@@ -68,7 +68,7 @@ namespace BattleArena
         }
 
         /// <summary>
-        /// Itnitalizes all the items that can be bought in the shop
+        /// Initializes all the items that can be bought in the shop
         /// </summary>
         public void InitializeItems()
         {
@@ -218,10 +218,9 @@ namespace BattleArena
         /// Gets an input from the player based on some given decision
         /// </summary>
         /// <param name="description">The context for the input</param>
-        /// <param name="option1">The first option the player can choose</param>
-        /// <param name="option2">The second option the player can choose</param>
+        /// <param name="options">The options the player can choose from</param>
         /// <returns></returns>
-        int GetInput(string description, params string[] options)
+        public int GetInput(string description, params string[] options)
         {
             string input = "";
             int inputReceived = -1;
@@ -272,7 +271,7 @@ namespace BattleArena
         /// <summary>
         /// Calls the appropriate function(s) based on the current scene index
         /// </summary>
-        void DisplayCurrentScene()
+        public void DisplayCurrentScene()
         {
             switch (_currentScene)
             {
@@ -302,7 +301,7 @@ namespace BattleArena
         /// <summary>
         /// Displays the menu that allows the player to start or quit the game
         /// </summary>
-        void DisplayMainMenu()
+        public void DisplayMainMenu()
         {
             int choice = GetInput("Play Again?", "Yes", "No");
 
@@ -398,7 +397,7 @@ namespace BattleArena
         /// Displays text asking for the players name. Doesn't transition to the next section
         /// until the player decides to keep the name.
         /// </summary>
-        void GetPlayerName()
+        public void GetPlayerName()
         {
             //Ask player for a name
             Console.WriteLine("Welcome to the Battle Arena! What is your fighters name?");
@@ -455,7 +454,7 @@ namespace BattleArena
         /// Prints a characters stats to the console
         /// </summary>
         /// <param name="character">The character that will have its stats shown</param>
-        void DisplayStats(Entity character)
+        public void DisplayStats(Entity character)
         {
 
             Console.WriteLine("Name: " + character.Name);
@@ -484,7 +483,7 @@ namespace BattleArena
         }
 
         /// <summary>
-        /// Simulates one turn in the current monster fight
+        /// Simulates one turn in the current battle
         /// </summary>
         public void Battle()
         {
@@ -575,8 +574,8 @@ namespace BattleArena
         }
 
         /// <summary>
-        /// Displays the amount of gold they player has and shows their inventory if player has bought anything.
-        /// Displays the shop items to buy.
+        /// Displays the amount of gold the player has and shows their inventory if player has bought anything.
+        /// Displays the shop items player can buy.
         /// </summary>
         private void DisplayShopMenu()
         {
@@ -623,7 +622,7 @@ namespace BattleArena
         /// Checks to see if either the player or the enemy has won the current battle.
         /// Updates the game based on who won the battle.
         /// </summary>
-        void CheckBattleResults()
+        public void CheckBattleResults()
         {
             //If player health drops below 0...
             if (_player.Health <= 0)
