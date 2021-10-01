@@ -32,6 +32,9 @@ namespace BattleArena
             get { return _defensePower; }
         }
 
+        /// <summary>
+        /// Default constructor of entity
+        /// </summary>
         public Entity()
         {
             _name = "Default";
@@ -40,6 +43,13 @@ namespace BattleArena
             _defensePower = 0;
         }
 
+        /// <summary>
+        /// Constructor of entity
+        /// </summary>
+        /// <param name="name">Name of entity</param>
+        /// <param name="health">Health of entity</param>
+        /// <param name="attackPower">Attack power of entity</param>
+        /// <param name="defensePower">Defense power of entity</param>
         public Entity(string name, float health, float attackPower, float defensePower)
         {
             _name = name;
@@ -48,7 +58,7 @@ namespace BattleArena
             _defensePower = defensePower;
         }
         /// <summary>
-        /// Function takes the attack power from entity that is attacking and subtacts if from the defense power
+        /// Function takes the attack power from entity that is attacking and subtracts it from the defense power
         /// of the entity that is being attacked then subtracts the damage the entity took from its health.
         /// </summary>
         /// <param name="damageAmount">Attacking entitys attack power</param>
