@@ -75,14 +75,14 @@ namespace BattleArena
             //Attack items
             Item dagger = new Item { Name = "Dagger - 20g", Cost = 20, StatBoost = 10, Type = ItemType.ATTACK };
             Item sword = new Item { Name = "Sword - 20g", Cost = 20, StatBoost = 10, Type = ItemType.ATTACK };
-            Item heavySword = new Item { Name = "Heavy Sword - 50g", Cost = 50, StatBoost = 30, Type = ItemType.ATTACK  };
+            Item heavySword = new Item { Name = "Heavy Sword - 50g", Cost = 50, StatBoost = 50, Type = ItemType.ATTACK  };
 
             //Defense items
             Item armor = new Item { Name = "Armor - 40g", Cost = 20, StatBoost = 20, Type = ItemType.DEFENSE };
             Item shield = new Item { Name = "Shield - 20g", Cost = 20, StatBoost = 15, Type = ItemType.DEFENSE };
 
             //Health item
-            Item healingBoost = new Item { Name = "Healing Boost - 30g", Cost = 30, StatBoost = 30, Type = ItemType.HEALTH };
+            Item healingBoost = new Item { Name = "Healing Boost - 30g", Cost = 30, StatBoost = 50, Type = ItemType.HEALTH };
 
             //Option in the shop for player to go back to battle
             Item goBackToBattle = new Item { Name = "Go Back To Battle" };
@@ -104,10 +104,10 @@ namespace BattleArena
             Entity gremlin = new Entity("Gremlin", 15, 40, 5);
 
             //Enemy 2 stats
-            Entity cyclops = new Entity("Cyclops", 50, 55, 10);
+            Entity cyclops = new Entity("Cyclops", 15, 55, 10);
 
             //Enemy 2 stats
-            Entity witch = new Entity("Witch", 40, 50, 10);
+            Entity witch = new Entity("Witch", 20, 50, 10);
 
             //Enemies are put into an array
             _enemies = new Entity[] { gremlin, cyclops, witch };
